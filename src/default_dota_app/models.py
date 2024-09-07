@@ -10,7 +10,7 @@ class Hero(models.Model):
         return f"{self.name}"
 
     class Meta:
-        ordering = ["name"]
+        ordering = ["id"]
 
 
 class Build(models.Model):
