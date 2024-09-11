@@ -1,3 +1,5 @@
 Django
 djangorestframework
 python-dotenv
+gunicorn
+psycopg2-binary
