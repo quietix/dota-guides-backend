@@ -1,0 +1,6 @@
+Django
+djangorestframework
+python-dotenv
+Pillow
+django-storages
+boto3
