@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ['DEBUG'])
+DEBUG = bool(int(os.environ['DEBUG']))
 
 ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS']
 if ALLOWED_HOSTS:
@@ -151,7 +151,7 @@ AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
 AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
 
 AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
-AWS_S3_FILE_OVERWRITE = bool(os.environ['AWS_S3_FILE_OVERWRITE'])
+AWS_S3_FILE_OVERWRITE = bool(int(os.environ['AWS_S3_FILE_OVERWRITE']))
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 
 STORAGES = {
