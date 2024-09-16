@@ -1,6 +1,3 @@
-Django
-djangorestframework
-python-dotenv
-Pillow
-django-storages
-boto3
+Django==5.1.1
+djangorestframework==3.15.2
+python-dotenv==1.0.1
