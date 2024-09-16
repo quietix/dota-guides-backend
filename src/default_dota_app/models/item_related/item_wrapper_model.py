@@ -4,10 +4,9 @@ from default_dota_app.models.item_related.item_model import Item
 
 
 class ItemWrapper(models.Model):
-    stage = models.ForeignKey(Stage, on_delete=models.CASCADE, null=True, related_name='itemwrappers')
-    item = models.ForeignKey(Item, on_delete=models.CASCADE, null=True)
-    explanation = models.TextField(blank=True)
-    order = models.SmallIntegerField(null=True)
+    stage = models.ForeignKey(Stage, null=True, on_delete=models.CASCADE, related_name='item_wrappers')
+    item = models.ForeignKey(Item, null=True, on_delete=models.CASCADE)
+    item_wrapper_explanation = models.TextField(blank=True)
 
     def __str__(self):
-        return f"Item Wrapper {self.id}: {self.item}"
+        return f"<{self.stage.guide.hero.hero_name}> <{self.stage.guide.guide_title}> <{self.stage.stage_name}> <Wrapper {self.item.item_name}> #{self.id}"

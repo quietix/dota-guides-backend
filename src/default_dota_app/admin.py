@@ -5,10 +5,11 @@ from default_dota_app.models import *
 
 admin.site.register(Hero)
 admin.site.register(Item)
-admin.site.register(Talent)
-admin.site.register(Skill)
-admin.site.register(TalentWrapper)
+admin.site.register(Guide)
 admin.site.register(ItemWrapper)
 admin.site.register(Stage)
-admin.site.register(SkillBuild)
-admin.site.register(Guide)
+
+# admin.site.register(Talent)
+# admin.site.register(Skill)
+# admin.site.register(TalentWrapper)
+# admin.site.register(SkillBuild)

@@ -20,12 +20,39 @@ def get_hero(request: Request, hero_name):
 
 
 @api_view(['GET'])
-def get_stages(request: Request):
-    stages = Stage.objects.all()
-    serializer = StageSerializer(stages, many=True)
-    # item_wrappers = ItemWrapper.objects.all()
-    # serializer = ItemWrapperSerializer(item_wrappers, many=True)
+def get_items(request: Request):
+    items = Item.objects.all()
+    serializer = ItemSerializer(items, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_item_wrappers(request: Request):
+    item_wrappers = ItemWrapper.objects.all()
+    serializer = ItemWrapperSerializer(item_wrappers, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_stages(request: Request):
+    stages = Stage.objects.prefetch_related('item_wrappers__item').all()
+    serializer = StageSerializer(stages, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_guides(request: Request):
+    guides = Guide.objects.prefetch_related('stages__item_wrappers__item').all()
+    serializer = GuideSerializer(guides, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_hero_guides(request: Request, hero_name):
+    guides = Guide.objects.filter(hero__hero_name=hero_name).prefetch_related('stages__item_wrappers__item')
+    serializer = GuideSerializer(guides, many=True)
+    return Response(serializer.data)
+
 
 
 # @api_view(['GET'])
