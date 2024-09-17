@@ -58,6 +58,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # My middleware
+    'djangorestframework_camel_case.middleware.CamelCaseMiddleWare',
 ]
 
 ROOT_URLCONF = 'server.urls'
@@ -142,8 +144,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
-    ]
+        'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
+    ],
+
+    'DEFAULT_PARSER_CLASSES': (
+            'djangorestframework_camel_case.parser.CamelCaseJSONParser',
+        ),
+
+    'JSON_UNDERSCOREIZE': {
+            'no_underscore_before_number': True,
+        },
+}
+
+JSON_CAMEL_CASE = {
+    'RENDERER_CLASS': 'drf_orjson_renderer.renderers.ORJSONRenderer'
 }
 
 # AWS configuration
