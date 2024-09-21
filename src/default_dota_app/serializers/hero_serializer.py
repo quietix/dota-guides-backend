@@ -1,13 +1,11 @@
 from rest_framework import serializers
 from default_dota_app.models import Hero
+from default_dota_app.serializers.attribute_serializer import AttributeSerializer
 
 
 class HeroSerializer(serializers.ModelSerializer):
-    attribute = serializers.SerializerMethodField()
+    attribute = AttributeSerializer(read_only=True)
 
     class Meta:
         model = Hero
-        fields = ('id', 'hero_name', 'attribute', 'img')
-
-    def get_attribute(self, obj):
-        return obj.get_attribute_display()
+        fields = ('id', 'hero_name', 'img', 'attribute')
