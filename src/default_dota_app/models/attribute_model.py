@@ -23,3 +23,6 @@ class Attribute(models.Model):
 
     def __str__(self):
         return f"{self.attribute_name}"
+
+    def get_attribute_name(self):
+        return dict(self.ATTRIBUTE_CHOICES).get(self.attribute_name, self.attribute_name)

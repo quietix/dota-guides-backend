@@ -8,4 +8,4 @@ class GuideSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=Guide
-        fields=('guide_title', 'guide_description', 'stages')
+        fields=('id', 'guide_title', 'guide_description', 'stages')

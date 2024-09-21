@@ -8,4 +8,4 @@ class ItemWrapperSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=ItemWrapper
-        fields=('item', 'item_wrapper_explanation')
+        fields=('id', 'item', 'item_wrapper_explanation')

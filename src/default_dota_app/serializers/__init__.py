@@ -14,3 +14,4 @@ from .item_related.stage_serializer import StageSerializer
 # Other serializers
 from .hero_serializer import HeroSerializer
 from .guide_serializer import GuideSerializer
+from .attribute_serializer import AttributeSerializer

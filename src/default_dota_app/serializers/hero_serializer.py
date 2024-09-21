@@ -7,7 +7,7 @@ class HeroSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Hero
-        fields = ('hero_name', 'attribute', 'img')
+        fields = ('id', 'hero_name', 'attribute', 'img')
 
     def get_attribute(self, obj):
         return obj.get_attribute_display()

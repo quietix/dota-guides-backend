@@ -8,4 +8,4 @@ class StageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=Stage
-        fields=('stage_name', 'stage_description', 'item_wrappers')
+        fields=('id', 'stage_name', 'stage_description', 'item_wrappers')

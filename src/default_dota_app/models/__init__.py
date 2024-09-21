@@ -14,3 +14,4 @@ from .item_related.item_model import Item
 # Other models
 from .hero_model import Hero
 from .guide_model import Guide
+from .attribute_model import Attribute

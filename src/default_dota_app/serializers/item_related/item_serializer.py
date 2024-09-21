@@ -5,4 +5,4 @@ from default_dota_app.models import Item
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model=Item
-        fields=('item_name', 'item_description', 'img')
+        fields=('id', 'item_name', 'item_description', 'img')

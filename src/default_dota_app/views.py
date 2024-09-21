@@ -5,6 +5,14 @@ from rest_framework.decorators import api_view
 from default_dota_app.models import *
 from default_dota_app.serializers import *
 
+
+@api_view(['GET'])
+def get_attributes(request: Request):
+    attributes = Attribute.objects.all()
+    serializer = AttributeSerializer(attributes, many=True)
+    return Response(serializer.data)
+
+
 @api_view(['GET'])
 def get_heroes(request: Request):
     heroes = Hero.objects.all()
@@ -52,7 +60,6 @@ def get_hero_guides(request: Request, hero_name):
     guides = Guide.objects.filter(hero__hero_name=hero_name).prefetch_related('stages__item_wrappers__item')
     serializer = GuideSerializer(guides, many=True)
     return Response(serializer.data)
-
 
 
 # @api_view(['GET'])
