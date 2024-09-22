@@ -4,7 +4,7 @@ from .item_related.item_wrapper_serializer import ItemWrapperSerializer
 from .item_related.stage_serializer import StageSerializer
 
 # Skill related serializers
-# from .skill_related.skill_serializer import SkillSerializer
+from .skill_related.skill_serializer import SkillSerializer
 # from .skill_related.skill_build_serializer import SkillBuildSerializer
 
 # Talent related serializers

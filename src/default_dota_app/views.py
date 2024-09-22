@@ -15,29 +15,24 @@ def get_attributes(request: Request):
 
 @api_view(['GET'])
 def get_heroes(request: Request):
-    heroes = Hero.objects.all()
+    heroes = Hero.objects.all().prefetch_related('skills')
     serializer = HeroSerializer(heroes, many=True)
     return Response(serializer.data)
 
 
 @api_view(['GET'])
-def get_hero(request: Request, hero_name):
-    heroes = Hero.objects.filter(hero_name=hero_name)
+def get_hero_details(request: Request, hero_name):
+    heroes = Hero.objects.filter(hero_name=hero_name).prefetch_related('skills')
     serializer = HeroSerializer(heroes, many=True)
     return Response(serializer.data)
 
+
+# ------------------ Test ------------------ #
 
 @api_view(['GET'])
 def get_items(request: Request):
     items = Item.objects.all()
     serializer = ItemSerializer(items, many=True)
-    return Response(serializer.data)
-
-
-@api_view(['GET'])
-def get_item_wrappers(request: Request):
-    item_wrappers = ItemWrapper.objects.all()
-    serializer = ItemWrapperSerializer(item_wrappers, many=True)
     return Response(serializer.data)
 
 
@@ -56,20 +51,23 @@ def get_guides(request: Request):
 
 
 @api_view(['GET'])
+def get_skills(request: Request):
+    skills = Skill.objects.all()
+    serializer = SkillSerializer(skills, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_item_wrappers(request: Request):
+    item_wrappers = ItemWrapper.objects.all()
+    serializer = ItemWrapperSerializer(item_wrappers, many=True)
+    return Response(serializer.data)
+
+
+
+
+@api_view(['GET'])
 def get_hero_guides(request: Request, hero_name):
     guides = Guide.objects.filter(hero__hero_name=hero_name).prefetch_related('stages__item_wrappers__item')
     serializer = GuideSerializer(guides, many=True)
     return Response(serializer.data)
-
-
-# @api_view(['GET'])
-# def get_guides(request: Request, hero_name):
-#     guides = Guide.objects.filter(hero__hero_name=hero_name)
-#
-#     guides = Guide.objects.prefetch_related(
-#         Prefetch('stages', queryset=Stage.objects.prefetch_related('itemwrappers')),
-#         Prefetch('skillbuilds', queryset=SkillBuild.objects.all()),
-#         Prefetch('talentwrappers', queryset=TalentWrapper.objects.all())
-#     )
-#     serializer = GuideSerializer(guides, many=True)
-#     return Response(serializer.data)
