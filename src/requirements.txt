@@ -6,7 +6,9 @@ django-storages==1.14.4
 djangorestframework==3.15.2
 djangorestframework-camel-case==1.4.2
 drf-orjson-renderer==1.7.3
+drf-yasg==1.21.7
 gunicorn==23.0.0
+inflection==0.5.1
 jmespath==1.0.1
 orjson==3.10.7
 packaging==24.1
@@ -14,9 +16,12 @@ pillow==10.4.0
 psycopg2-binary==2.9.9
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
+pytz==2024.2
+PyYAML==6.0.2
 s3transfer==0.10.2
+setuptools==75.1.0
 six==1.16.0
 sqlparse==0.5.1
+uritemplate==4.1.1
 urllib3==2.2.3
 whitenoise==6.7.0
-drf_yasg
