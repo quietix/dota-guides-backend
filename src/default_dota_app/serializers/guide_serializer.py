@@ -16,4 +16,4 @@ class DetailedGuideSerializer(serializers.ModelSerializer):
 class PreviewGuideSerializer(serializers.ModelSerializer):
     class Meta:
         model=Guide
-        fields=('id', 'guide_title')
+        fields=('id', 'guide_title', 'guide_description')

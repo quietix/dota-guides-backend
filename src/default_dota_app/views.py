@@ -142,80 +142,9 @@ def get_guide_details(request: Request, guide_id):
     serializer = DetailedGuideSerializer(guides, many=True)
     return Response(serializer.data)
 
-# ------------------ Test ------------------ #
 
 @api_view(['GET'])
-def get_items(request: Request):
-    """
-    Retrieve a list of all items.
-
-    **Response:**
-    - 200 OK: A list of items with their details.
-    - Example response:
-    ```json
-    [
-        {
-            "id": 1,
-            "itemName": "Clarity",
-            "itemDescription": "Restores mana.",
-            "img": "https://example.com/path/to/image.png"
-        },
-        ...
-    ]
-    ```
-    """
-    items = Item.objects.all()
-    serializer = ItemSerializer(items, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def get_stages(request: Request):
-    """
-    Retrieve a list of all stages with their item wrappers.
-
-    **Response:**
-    - 200 OK: A list of stages with their details and associated item wrappers.
-    - Example response:
-    ```json
-    [
-        {
-            "id": 4,
-            "stageName": "Early game",
-            "itemWrappers": [...]
-        },
-        ...
-    ]
-    ```
-    """
-    stages = Stage.objects.prefetch_related('item_wrappers__item').all()
-    serializer = StageSerializer(stages, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def get_guides(request: Request):
-    """
-    Retrieve a list of all guides.
-
-    **Response:**
-    - 200 OK: A list of guides with their details.
-    - Example response:
-    ```json
-    [
-        {
-            "id": 2,
-            "guideTitle": "Hard lane (3-d position)",
-            "stages": [...]
-        },
-        ...
-    ]
-    ```
-    """
-    guides = Guide.objects.prefetch_related('stages__item_wrappers__item').all()
-    serializer = DetailedGuideSerializer(guides, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def get_skills(request: Request):
+def get_skills(request: Request, hero_name):
     """
     Retrieve a list of all skills.
 
@@ -234,34 +163,6 @@ def get_skills(request: Request):
     ]
     ```
     """
-    skills = Skill.objects.all()
+    skills = Skill.objects.filter(hero__hero_name=hero_name)
     serializer = SkillSerializer(skills, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def get_item_wrappers(request: Request):
-    """
-    Retrieve a list of all item wrappers.
-
-    **Response:**
-    - 200 OK: A list of item wrappers with their associated items.
-    - Example response:
-    ```json
-    [
-        {
-            "id": 3,
-            "item": {
-                "id": 6,
-                "itemName": "Clarity",
-                "itemDescription": "Restores mana.",
-                "img": "https://example.com/path/to/image.png"
-            },
-            "itemWrapperExplanation": ""
-        },
-        ...
-    ]
-    ```
-    """
-    item_wrappers = ItemWrapper.objects.all()
-    serializer = ItemWrapperSerializer(item_wrappers, many=True)
     return Response(serializer.data)
