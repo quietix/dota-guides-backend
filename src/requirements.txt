@@ -19,3 +19,5 @@ six==1.16.0
 sqlparse==0.5.1
 urllib3==2.2.3
 whitenoise==6.7.0
+drf_yasg
+setuptools
