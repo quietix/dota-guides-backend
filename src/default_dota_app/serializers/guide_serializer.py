@@ -4,10 +4,16 @@ from default_dota_app.serializers.item_related.stage_serializer import StageSeri
 from default_dota_app.serializers.skill_related.skill_build_serializer import SkillBuildSerializer
 
 
-class GuideSerializer(serializers.ModelSerializer):
+class DetailedGuideSerializer(serializers.ModelSerializer):
     stages = StageSerializer(many=True, read_only=True)
     skill_builds = SkillBuildSerializer(many=True, read_only=True)
 
     class Meta:
         model=Guide
         fields=('id', 'guide_title', 'guide_description', 'stages', 'skill_builds')
+
+
+class PreviewGuideSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Guide
+        fields=('id', 'guide_title')

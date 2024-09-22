@@ -5,6 +5,7 @@ urlpatterns = [
     path('heroes/', views.get_heroes, name='get_heroes'),
     path('heroes/<str:hero_name>/', views.get_hero_details, name='get_hero_details'),
     path('heroes/<str:hero_name>/guides/', views.get_hero_guides, name='get_hero_guides'),
+    path('guides/<str:guide_id>/', views.get_guide_details, name='get_guide_details'),
     path('attributes/', views.get_attributes, name='get_attributes'),
 
     # Test

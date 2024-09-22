@@ -33,8 +33,15 @@ def get_hero_guides(request: Request, hero_name):
     if not Hero.objects.filter(hero_name=hero_name).exists():
         return Response({"detail": "Hero not found."}, status=status.HTTP_404_NOT_FOUND)
 
-    guides = Guide.objects.filter(hero__hero_name=hero_name).prefetch_related('stages__item_wrappers__item')
-    serializer = GuideSerializer(guides, many=True)
+    guides = Guide.objects.filter(hero__hero_name=hero_name)
+    serializer = PreviewGuideSerializer(guides, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_guide_details(request: Request, guide_id):
+    guides = Guide.objects.filter(id=guide_id).prefetch_related('stages__item_wrappers__item')
+    serializer = DetailedGuideSerializer(guides, many=True)
     return Response(serializer.data)
 
 
@@ -57,7 +64,7 @@ def get_stages(request: Request):
 @api_view(['GET'])
 def get_guides(request: Request):
     guides = Guide.objects.prefetch_related('stages__item_wrappers__item').all()
-    serializer = GuideSerializer(guides, many=True)
+    serializer = DetailedGuideSerializer(guides, many=True)
     return Response(serializer.data)
 
 

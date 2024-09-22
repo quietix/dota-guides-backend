@@ -13,5 +13,6 @@ from .skill_related.skill_serializer import SkillSerializer
 
 # Other serializers
 from .hero_serializer import HeroSerializer
-from .guide_serializer import GuideSerializer
+from .guide_serializer import DetailedGuideSerializer
+from .guide_serializer import PreviewGuideSerializer
 from .attribute_serializer import AttributeSerializer
