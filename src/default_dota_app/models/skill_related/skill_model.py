@@ -24,7 +24,7 @@ class Skill(models.Model):
     )
 
     def __str__(self):
-        return f"<{self.hero}> <{self.skill_name}>"
+        return f"<{self.hero}> <{self.skill_name}> <Skill #{self.skill_order}>"
 
     class Meta:
         ordering = ["hero__hero_name", "skill_order"]
