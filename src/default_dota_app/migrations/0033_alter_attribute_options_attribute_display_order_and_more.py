@@ -5,9 +5,11 @@ import django.db.models.deletion
 from django.db import migrations, models
 
 
-# def reorder_attributes(apps, schema_editor):
-#     Attribute = apps.get_model('default_dota_app', 'Attribute')
-#     Attribute.reorder()
+def reorder_attributes(apps, schema_editor):
+    Attribute = apps.get_model('default_dota_app', 'Attribute')
+    for index, obj in enumerate(Attribute.objects.order_by('display_order'), start=1):
+        obj.display_order = index
+        obj.save()
 
 
 class Migration(migrations.Migration):
@@ -17,10 +19,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterModelOptions(
-            name='attribute',
-            options={'ordering': ['display_order']},
-        ),
         migrations.AddField(
             model_name='attribute',
             name='display_order',
@@ -37,5 +35,10 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='skills_order', to='default_dota_app.skillbuild'),
         ),
 
-        # migrations.RunPython(reorder_attributes)
+        migrations.RunPython(reorder_attributes),
+
+        migrations.AlterModelOptions(
+            name='attribute',
+            options={'ordering': ['display_order'], 'unique_together': {('display_order',)}},
+        )
     ]
