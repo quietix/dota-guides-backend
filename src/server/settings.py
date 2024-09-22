@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'default_dota_app',
     'rest_framework',
     'storages',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
