@@ -23,4 +23,3 @@ class Attribute(models.Model):
 
     class Meta:
         ordering = ['display_order']
-        unique_together = ('display_order',)
