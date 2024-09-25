@@ -9,7 +9,7 @@ from default_dota_app.models import *
 from default_dota_app.serializers import *
 
 
-class AddGuideView(APIView):
+class GuidesView(APIView):
     def get(self, request, hero_name):
         try:
             hero = Hero.objects.get(hero_name=hero_name)
