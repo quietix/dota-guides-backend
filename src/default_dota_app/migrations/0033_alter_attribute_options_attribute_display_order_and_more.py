@@ -36,9 +36,4 @@ class Migration(migrations.Migration):
         ),
 
         migrations.RunPython(reorder_attributes),
-
-        migrations.AlterModelOptions(
-            name='attribute',
-            options={'ordering': ['display_order'], 'unique_together': {('display_order',)}},
-        )
     ]
