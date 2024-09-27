@@ -12,7 +12,12 @@ from .skill_related.skill_serializer import SkillSerializer
 # from .talent_related.talent_wrapper_serializer import TalentWrapperSerializer
 
 # Other serializers
-from .hero_serializer import HeroSerializer
+from .hero_serializer import ReadHeroPreviewSerializer
+from .hero_serializer import ReadHeroDetailsSerializer
+from .hero_serializer import WriteHeroSerializer
+
 from .guide_serializer import DetailedGuideSerializer
 from .guide_serializer import PreviewGuideSerializer
+from .guide_serializer import WriteGuideSerializer
+
 from .attribute_serializer import AttributeSerializer

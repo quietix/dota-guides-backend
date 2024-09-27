@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'storages',
     'drf_yasg',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -149,12 +150,16 @@ REST_FRAMEWORK = {
     ],
 
     'DEFAULT_PARSER_CLASSES': (
-            'djangorestframework_camel_case.parser.CamelCaseJSONParser',
-        ),
+        'djangorestframework_camel_case.parser.CamelCaseJSONParser',
+    ),
 
     'JSON_UNDERSCOREIZE': {
-            'no_underscore_before_number': True,
-        },
+        'no_underscore_before_number': True,
+    },
+
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
 }
 
 JSON_CAMEL_CASE = {
