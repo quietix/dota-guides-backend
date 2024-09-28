@@ -3,15 +3,12 @@ from default_dota_app.models import Guide
 from default_dota_app.serializers.item_related.stage_serializer import StageSerializer
 from default_dota_app.serializers.skill_related.skill_build_serializer import SkillBuildSerializer
 from default_dota_app.models import Hero
-from default_dota_app.serializers.user_serializer import UserSerializer
 
 
 class PreviewGuideSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-
     class Meta:
         model=Guide
-        fields=('user', 'id', 'guide_title', 'guide_description')
+        fields=('id', 'guide_title', 'guide_description')
 
 
 class DetailedGuideSerializer(serializers.ModelSerializer):
