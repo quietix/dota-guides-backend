@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from default_dota_app.models import *
 
 # Register your serializers here.

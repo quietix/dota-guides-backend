@@ -1,7 +1,7 @@
 from django.urls import path
-from default_dota_app.views import RegisterView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
+from default_dota_app.views import RegisterView
 
 urlpatterns = [
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

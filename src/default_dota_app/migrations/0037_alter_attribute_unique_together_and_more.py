@@ -1,6 +1,7 @@
-import default_dota_app.models.attribute_model
 import django.core.validators
 from django.db import migrations, models
+
+import default_dota_app.models.attribute_model
 
 
 class Migration(migrations.Migration):
