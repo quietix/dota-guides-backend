@@ -9,8 +9,6 @@ from default_dota_app.serializers import *
 
 
 class AttributesView(APIView):
-    permission_classes = (IsAuthenticated,)
-
     def get(self, request):
         """
         Retrieve a list of all attributes.
