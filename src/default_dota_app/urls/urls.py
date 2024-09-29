@@ -1,14 +1,15 @@
-from django.urls import path
+from django.urls import path, include
 from default_dota_app.views import *
-from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
-    path('login/', obtain_auth_token),
-
     path('attributes/', AttributesView.as_view()),
 
     path('heroes/', HeroesView.as_view()),
     path('heroes/<str:hero_name>/', HeroDetailsView.as_view()),
 
     path('guides/<str:hero_name>/', GuidesView.as_view()),
+
+    # External urls
+    path('', include('default_dota_app.urls.swagger_urls')),
+    path('auth/', include('default_dota_app.urls.auth_urls'))
 ]
