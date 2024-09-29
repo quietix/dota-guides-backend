@@ -6,3 +6,5 @@ from .guide_views import GuideDetailsView
 from .guide_views import GuidesView
 
 from .attribute_views import AttributesView
+
+from .auth_views import RegisterView

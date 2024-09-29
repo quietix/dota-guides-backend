@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'storages',
     'drf_yasg',
-    'rest_framework.authtoken',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist'
 ]
 
 MIDDLEWARE = [
@@ -158,9 +159,15 @@ REST_FRAMEWORK = {
     },
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
 }
+
+SIMPLE_JWT = {
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+}
+
 
 JSON_CAMEL_CASE = {
     'RENDERER_CLASS': 'drf_orjson_renderer.renderers.ORJSONRenderer'
