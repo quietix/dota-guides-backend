@@ -11,13 +11,16 @@ from default_dota_app.serializers import *
 class GuideDetailsView(drf_views.APIView):
     def get(self, request, id):
         if request.user.is_authenticated:
-            guide = Guide.objects.get(user=request.user, id=id)
+            user = request.user
         else:
-            admin_user = User.objects.filter(is_superuser=True).first()
-            guide = Guide.objects.get(user=admin_user, id=id)
+            user = User.objects.filter(is_superuser=True).first()
 
-        serializer = DetailedGuideSerializer(guide)
-        return Response(serializer.data)
+        try:
+            guide = Guide.objects.get(user=user, id=id)
+            serializer = DetailedGuideSerializer(guide)
+            return Response(serializer.data)
+        except:
+            return Response({"detail:" "Guide not found."}, status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request, hero_name):
         self.permission_classes = [IsAuthenticated]
