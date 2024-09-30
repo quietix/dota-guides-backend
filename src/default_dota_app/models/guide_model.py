@@ -1,8 +1,9 @@
 from django.contrib.auth.models import User
-from django.db import models
-from default_dota_app.models.hero_model import Hero
 from django.core.validators import MinValueValidator
+from django.db import models
 from django.db.models import Max
+
+from default_dota_app.models.hero_model import Hero
 
 
 def get_admin_user():

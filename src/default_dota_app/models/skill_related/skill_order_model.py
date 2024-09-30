@@ -1,7 +1,8 @@
-from django.db import models
 from django.core.validators import MinValueValidator
-from default_dota_app.models.skill_related.skill_model import Skill
+from django.db import models
+
 from default_dota_app.models.skill_related.skill_build_model import SkillBuild
+from default_dota_app.models.skill_related.skill_model import Skill
 
 
 class SkillOrder(models.Model):

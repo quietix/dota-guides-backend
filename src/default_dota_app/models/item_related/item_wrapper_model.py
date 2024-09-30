@@ -1,6 +1,7 @@
 from django.db import models
-from default_dota_app.models.item_related.stage_model import Stage
+
 from default_dota_app.models.item_related.item_model import Item
+from default_dota_app.models.item_related.stage_model import Stage
 
 
 class ItemWrapper(models.Model):

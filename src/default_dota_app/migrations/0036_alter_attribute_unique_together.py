@@ -1,6 +1,7 @@
-from django.db import migrations, models
 from django.core.validators import MinValueValidator
+from django.db import migrations, models
 from django.db.models import Max
+
 
 def get_next_display_order():
     from default_dota_app.models import Attribute

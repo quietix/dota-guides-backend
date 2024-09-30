@@ -1,7 +1,8 @@
-from django.db import models
 from django.core.validators import MinValueValidator
-from default_dota_app.models.guide_model import Guide
+from django.db import models
 from django.db.models import Max
+
+from default_dota_app.models.guide_model import Guide
 
 
 def get_next_skill_build_order():

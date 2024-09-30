@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
+from datetime import timedelta
+
 from dotenv.main import load_dotenv
 from pathlib import Path
 
@@ -49,8 +51,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'storages',
     'drf_yasg',
-    'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist'
+    'knox'
 ]
 
 MIDDLEWARE = [
@@ -158,16 +159,20 @@ REST_FRAMEWORK = {
         'no_underscore_before_number': True,
     },
 
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ]
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
 }
 
-SIMPLE_JWT = {
-    'ROTATE_REFRESH_TOKENS': True,
-    'BLACKLIST_AFTER_ROTATION': True,
+REST_KNOX = {
+    'USER_SERIALIZER': 'knox.serializers.UserSerializer',
+    'TOKEN_TTL': timedelta(hours=2),
+    'SECURE_HASH_ALGORITHM': 'hashlib.sha512',
+    'AUTH_TOKEN_CHARACTER_LENGTH': 64,
+    'TOKEN_LIMIT_PER_USER': None,
+    'AUTO_REFRESH': False,
+    'MIN_REFRESH_INTERVAL': 60,
+    # 'AUTH_HEADER_PREFIX': 'Token',
+    'TOKEN_MODEL': 'knox.AuthToken',
 }
-
 
 JSON_CAMEL_CASE = {
     'RENDERER_CLASS': 'drf_orjson_renderer.renderers.ORJSONRenderer'
@@ -190,3 +195,8 @@ STORAGES = {
         "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
     }
 }
+
+AUTHENTICATION_BACKENDS = [
+    'default_dota_app.backend.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]

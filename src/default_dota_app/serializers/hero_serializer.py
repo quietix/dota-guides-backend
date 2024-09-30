@@ -1,8 +1,9 @@
 from rest_framework import serializers
+
 from default_dota_app.models import Hero, Attribute
 from default_dota_app.serializers.attribute_serializer import AttributeSerializer
-from default_dota_app.serializers.skill_related.skill_serializer import SkillSerializer
 from default_dota_app.serializers.guide_serializer import PreviewGuideSerializer
+from default_dota_app.serializers.skill_related.skill_serializer import SkillSerializer
 
 
 class ReadHeroPreviewSerializer(serializers.ModelSerializer):
