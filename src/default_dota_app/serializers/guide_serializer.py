@@ -21,7 +21,7 @@ class DetailedGuideSerializer(serializers.ModelSerializer):
         fields=('id', 'guide_title', 'guide_description', 'stages', 'skill_builds')
 
 
-class WriteGuideSerializer(serializers.ModelSerializer):
+class CreateGuideSerializer(serializers.ModelSerializer):
     hero = serializers.SlugRelatedField(
         queryset=Hero.objects.all(),
         slug_field='hero_name'
@@ -30,3 +30,10 @@ class WriteGuideSerializer(serializers.ModelSerializer):
     class Meta:
         model=Guide
         fields=('hero', 'display_order', 'guide_title', 'guide_description')
+
+
+
+class UpdateGuideSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Guide
+        fields=('display_order', 'guide_title', 'guide_description')
