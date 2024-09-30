@@ -20,7 +20,7 @@ class GuideDetailsView(drf_views.APIView):
             serializer = DetailedGuideSerializer(guide)
             return Response(serializer.data)
         except:
-            return Response({"detail:" "Guide not found."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"detail:" "Guide with such ID is not found for this user."}, status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request, hero_name):
         self.permission_classes = [IsAuthenticated]
