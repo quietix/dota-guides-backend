@@ -197,6 +197,6 @@ STORAGES = {
 }
 
 AUTHENTICATION_BACKENDS = [
-    'default_dota_app.backend.EmailBackend',
+    'default_dota_app.auth.backend.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]

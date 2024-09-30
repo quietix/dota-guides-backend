@@ -1,6 +1,6 @@
 # Item related serializers
 from .attribute_serializer import AttributeSerializer
-from .user_serializers.register_serializer import RegisterSerializer
+from .user_serializers import *
 from .auth.login_serializer import LoginSerializer
 from .guide_serializer import DetailedGuideSerializer
 from .guide_serializer import PreviewGuideSerializer
