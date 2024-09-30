@@ -5,6 +5,7 @@ from .auth.login_serializer import LoginSerializer
 from .guide_serializer import DetailedGuideSerializer
 from .guide_serializer import PreviewGuideSerializer
 from .guide_serializer import CreateGuideSerializer
+from .guide_serializer import UpdateGuideSerializer
 from .hero_serializer import ReadHeroDetailsSerializer
 # Other serializers
 from .hero_serializer import ReadHeroPreviewSerializer

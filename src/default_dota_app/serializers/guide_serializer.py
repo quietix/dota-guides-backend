@@ -30,3 +30,10 @@ class CreateGuideSerializer(serializers.ModelSerializer):
     class Meta:
         model=Guide
         fields=('hero', 'display_order', 'guide_title', 'guide_description')
+
+
+
+class UpdateGuideSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Guide
+        fields=('display_order', 'guide_title', 'guide_description')
