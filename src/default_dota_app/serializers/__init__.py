@@ -4,7 +4,7 @@ from .user_serializers.register_serializer import RegisterSerializer
 from .auth.login_serializer import LoginSerializer
 from .guide_serializer import DetailedGuideSerializer
 from .guide_serializer import PreviewGuideSerializer
-from .guide_serializer import WriteGuideSerializer
+from .guide_serializer import CreateGuideSerializer
 from .hero_serializer import ReadHeroDetailsSerializer
 # Other serializers
 from .hero_serializer import ReadHeroPreviewSerializer

@@ -21,7 +21,7 @@ class DetailedGuideSerializer(serializers.ModelSerializer):
         fields=('id', 'guide_title', 'guide_description', 'stages', 'skill_builds')
 
 
-class WriteGuideSerializer(serializers.ModelSerializer):
+class CreateGuideSerializer(serializers.ModelSerializer):
     hero = serializers.SlugRelatedField(
         queryset=Hero.objects.all(),
         slug_field='hero_name'
