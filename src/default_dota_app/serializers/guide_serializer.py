@@ -1,5 +1,4 @@
 from rest_framework import serializers
-
 from default_dota_app.models import Guide
 from default_dota_app.models import Hero
 from default_dota_app.serializers.item_related.stage_serializer import StageSerializer
@@ -30,7 +29,6 @@ class CreateGuideSerializer(serializers.ModelSerializer):
     class Meta:
         model=Guide
         fields=('hero', 'display_order', 'guide_title', 'guide_description')
-
 
 
 class UpdateGuideSerializer(serializers.ModelSerializer):
