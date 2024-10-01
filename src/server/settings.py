@@ -15,6 +15,7 @@ from datetime import timedelta
 
 from dotenv.main import load_dotenv
 from pathlib import Path
+from logging.handlers import RotatingFileHandler
 
 load_dotenv()
 
@@ -200,3 +201,53 @@ AUTHENTICATION_BACKENDS = [
     'default_dota_app.auth.backend.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+
+LOG_FILE_PATH = os.path.join(BASE_DIR, 'logs', 'app.log')
+os.makedirs(os.path.dirname(LOG_FILE_PATH), exist_ok=True)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            '()': 'colorlog.ColoredFormatter',
+            'format': '%(log_color)s%(asctime)s - %(levelname)s - %(name)s - %(message)s',
+            'log_colors': {
+                'DEBUG': 'cyan',
+                'INFO': 'green',
+                'WARNING': 'yellow',
+                'ERROR': 'red',
+                'CRITICAL': 'bold_red',
+            },
+        },
+        'file': {
+            'format': '%(asctime)s - %(levelname)s - %(name)s - %(message)s',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard',
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': LOG_FILE_PATH,
+            'maxBytes': 5 * 1024 * 1024,
+            'backupCount': 5,
+            'formatter': 'file',
+        },
+    },
+    'loggers': {
+        logger_name: {
+            'level': 'WARNING',
+            'propagate': True,
+        } for logger_name in ('django', 'django.request', 'django.db.backends', 'django.template', 'core')
+    },
+    'root': {
+        'level': 'DEBUG',
+        'handlers': ['console', 'file'],
+    }
+}
