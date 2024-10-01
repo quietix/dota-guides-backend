@@ -6,3 +6,4 @@ from .guide_views import *
 from .user_views import *
 from .auth_views import *
 from .documentation_links import documentation_links_view
+from .items_view import ItemsView

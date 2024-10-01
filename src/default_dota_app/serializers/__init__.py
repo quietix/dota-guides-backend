@@ -13,5 +13,6 @@ from .hero_serializer import WriteHeroSerializer
 from .item_related.item_serializer import ItemSerializer
 from .item_related.item_wrapper_serializer import ItemWrapperSerializer
 from .item_related.stage_serializer import StageSerializer
+from .item_related.item_section_serializer import ItemSectionSerializer
 # Skill related serializers
 from .skill_related.skill_serializer import SkillSerializer

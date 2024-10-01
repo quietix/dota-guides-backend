@@ -13,6 +13,8 @@ urlpatterns = [
     path('guides/<str:id>/', GuideDetailsView.as_view()),
     path('guides/<str:hero_name>/create/', CreateGuideView.as_view()),
 
+    path('items/', ItemsView.as_view()),
+
     # External urls
     path('auth/', include('default_dota_app.urls.auth_urls')),
     path('', include('default_dota_app.urls.swagger_urls')),
