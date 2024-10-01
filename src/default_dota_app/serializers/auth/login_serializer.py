@@ -2,13 +2,10 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 
-class LoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    password = serializers.CharField(style={'input_type': 'password'}, trim_whitespace=False)
 
-    class Meta:
-        model = User
-        fields = ('email', 'password')
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    password = serializers.CharField(style={'input_type': 'password'}, trim_whitespace=False, required=True)
 
     def validate(self, attrs):
         email = str(attrs.get('email')).lower()
