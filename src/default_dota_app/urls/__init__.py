@@ -3,6 +3,8 @@ from django.urls import path, include
 from default_dota_app.views import *
 
 urlpatterns = [
+    path('', documentation_links_view),
+
     path('attributes/', AttributesView.as_view()),
 
     path('heroes/', HeroesView.as_view()),
