@@ -6,22 +6,16 @@ from django.db.models import Max
 from default_dota_app.models.hero_model import Hero
 
 
-def get_admin_user():
-    return User.objects.filter(is_superuser=True).first().id or User.objects.filter(is_staff=True).first().id
-
-
-def get_next_guide_order():
-    max_order = Guide.objects.aggregate(Max('display_order'))['display_order__max']
-    return (max_order + 1) if max_order is not None else 1
-
-
 class Guide(models.Model):
+    def get_admin_user(self):
+        return User.objects.filter(is_superuser=True).first().id or User.objects.filter(is_staff=True).first().id
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=get_admin_user, related_name='guides')
     hero = models.ForeignKey(Hero, null=True, on_delete=models.SET_NULL, related_name='guides')
     guide_title = models.CharField(max_length=200)
     guide_description = models.TextField(blank=True)
     display_order = models.IntegerField(
-        default=get_next_guide_order,
+        default=1,
         validators=[
             MinValueValidator(1)
         ]

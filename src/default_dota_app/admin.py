@@ -2,8 +2,6 @@ from django.contrib import admin
 
 from default_dota_app.models import *
 
-# Register your serializers here.
-
 admin.site.register(Hero)
 admin.site.register(Item)
 admin.site.register(Guide)
@@ -13,3 +11,4 @@ admin.site.register(Attribute)
 admin.site.register(Skill)
 admin.site.register(SkillOrder)
 admin.site.register(SkillBuild)
+admin.site.register(ItemSection)
