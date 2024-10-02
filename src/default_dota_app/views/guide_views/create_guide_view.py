@@ -24,7 +24,7 @@ class CreateGuideView(drf_views.APIView):
         serializer = CreateGuideSerializer(data=data)
 
         if serializer.is_valid():
-            guide = serializer.save(user=self.request.user)
+            guide = serializer.save(user=request.user)
             return Response(PreviewGuideSerializer(guide).data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
