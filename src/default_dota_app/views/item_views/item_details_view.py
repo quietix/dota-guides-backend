@@ -4,23 +4,23 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from default_dota_app.models import *
 from default_dota_app.serializers import *
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 import logging
 
 logger = logging.getLogger(__name__)
 
-class ItemsView(APIView):
+class ItemDetailsView(APIView):
     permission_classes = (AllowAny,)
 
-    def get(self, request, id=None):
-        if id:
-            return self.get_item(request, id)
-
-        logger.info("Getting all items")
-        item_sections = ItemSection.objects.all().prefetch_related('items')
-        serializer = ListItemsBySectionsSerializer(item_sections, many=True)
-        return Response(serializer.data)
-
-    def get_item(self, request, id):
+    @swagger_auto_schema(
+        operation_description="Retrieve specific item by ID",
+        responses={
+            200: openapi.Response('Success', ListItemsBySectionsSerializer(many=True)),
+            404: 'Item not found'
+        }
+    )
+    def get(self, request, id):
         try:
             item = Item.objects.get(id=id)
         except Item.DoesNotExist:
@@ -32,21 +32,15 @@ class ItemsView(APIView):
         logger.info(f"Retrieved item #{item.id}")
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request):
-        self.permission_classes = [IsAdminUser]
-        self.check_permissions(request)
-
-        serializer = CreateItemSerializer(data=request.data)
-
-        if serializer.is_valid():
-            item = serializer.save()
-            logger.info(f"Created item #{item.id}")
-            return Response(ReadItemSerializer(item).data, status=status.HTTP_201_CREATED)
-
-        logger.error(f"User {request.user.username} failed to create an item. Errors: {serializer.errors}.")
-        return Response(f"User {request.user.username} failed to create an item. Errors: {serializer.errors}.",
-                        status=status.HTTP_400_BAD_REQUEST)
-
+    @swagger_auto_schema(
+        operation_description="Update an existing item (Admin only)",
+        request_body=UpdateItemSerializer,
+        responses={
+            200: ReadItemSerializer,
+            400: 'Invalid input',
+            404: 'Item not found'
+        }
+    )
     def patch(self, request, id):
         self.permission_classes = [IsAdminUser]
         self.check_permissions(request)
@@ -67,6 +61,13 @@ class ItemsView(APIView):
         logger.error(f"User {request.user.username} failed to update item #{id}. Errors: {serializer.errors}.")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @swagger_auto_schema(
+        operation_description="Delete an item (Admin only)",
+        responses={
+            204: 'Item deleted successfully',
+            404: 'Item not found'
+        }
+    )
     def delete(self, request, id):
         self.permission_classes = [IsAdminUser]
         self.check_permissions(request)

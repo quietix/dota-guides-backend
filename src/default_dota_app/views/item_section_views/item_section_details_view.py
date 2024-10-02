@@ -4,23 +4,24 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from default_dota_app.models import *
 from default_dota_app.serializers import *
+from drf_yasg.utils import swagger_auto_schema
 import logging
 
 logger = logging.getLogger(__name__)
 
-class ItemSectionsView(APIView):
+class ItemSectionDetailsView(APIView):
     permission_classes = (AllowAny,)
 
-    def get(self, request, id=None):
-        if id:
-            return self.get_item_section(request, id)
-
-        logger.info("Getting all Item Sections")
-        item_sections = ItemSection.objects.all()
-        serializer = ListItemSectionsSerializer(item_sections, many=True)
-        return Response(serializer.data)
-
-    def get_item_section(self, request, id):
+    @swagger_auto_schema(
+        tags=["item_section"],
+        operation_description="Retrieve specific Item Section by ID",
+        operation_id="item_section_detail",
+        responses={
+            200: ListItemSectionsSerializer,
+            404: 'Item Section not found'
+        }
+    )
+    def get(self, request, id):
         try:
             item_section = ItemSection.objects.get(id=id)
         except ItemSection.DoesNotExist:
@@ -28,24 +29,20 @@ class ItemSectionsView(APIView):
             return Response({"error": "Item Section not found"}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = ListItemSectionsSerializer(item_section)
-
         logger.info(f"Retrieved Item Section #{item_section.id}")
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request):
-        self.permission_classes = [IsAdminUser]
-        self.check_permissions(request)
-
-        serializer = CreateItemSectionSerializer(data=request.data)
-
-        if serializer.is_valid():
-            item_section = serializer.save()
-            logger.info(f"Created Item Section #{item_section.id}")
-            return Response(ListItemSectionsSerializer(item_section).data, status=status.HTTP_201_CREATED)
-
-        logger.error(f"User {request.user.username} failed to create an Item Section. Errors: {serializer.errors}.")
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    @swagger_auto_schema(
+        tags=["item_section"],
+        operation_description="Update an existing item section (Admin only)",
+        operation_id="item_section_update",
+        request_body=UpdateItemSectionSerializer,
+        responses={
+            200: ListItemSectionsSerializer,
+            400: 'Invalid input',
+            404: 'Item Section not found'
+        }
+    )
     def patch(self, request, id):
         self.permission_classes = [IsAdminUser]
         self.check_permissions(request)
@@ -67,6 +64,15 @@ class ItemSectionsView(APIView):
         return Response(f"User {request.user.username} failed to update Item Section #{id}. Errors: {serializer.errors}.",
                         status=status.HTTP_400_BAD_REQUEST)
 
+    @swagger_auto_schema(
+        tags=["item_section"],
+        operation_description="Delete an item section (Admin only)",
+        operation_id="item_section_delete",
+        responses={
+            204: 'Item Section deleted successfully',
+            404: 'Item Section not found'
+        }
+    )
     def delete(self, request, id):
         self.permission_classes = [IsAdminUser]
         self.check_permissions(request)
@@ -80,3 +86,4 @@ class ItemSectionsView(APIView):
         item_section.delete()
         logger.info(f"User {request.user.username} deleted Item Section #{id}")
         return Response({"message": f"Item Section #{id} deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
