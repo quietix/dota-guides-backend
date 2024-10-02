@@ -14,6 +14,7 @@ class ItemDetailsView(APIView):
     permission_classes = (AllowAny,)
 
     @swagger_auto_schema(
+        tags=["Items"],
         operation_description="Retrieve specific item by ID",
         responses={
             200: openapi.Response('Success', ListItemsBySectionsSerializer(many=True)),
@@ -33,6 +34,7 @@ class ItemDetailsView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(
+        tags=["Items"],
         operation_description="Update an existing item (Admin only)",
         request_body=UpdateItemSerializer,
         responses={
@@ -62,6 +64,7 @@ class ItemDetailsView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @swagger_auto_schema(
+        tags=["Items"],
         operation_description="Delete an item (Admin only)",
         responses={
             204: 'Item deleted successfully',

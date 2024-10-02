@@ -10,10 +10,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class ItemsListView(APIView):
+class ItemListView(APIView):
     permission_classes = (AllowAny,)
 
     @swagger_auto_schema(
+        tags=["Items"],
         operation_description="Retrieve all items or a specific item by ID",
         responses={
             200: openapi.Response('Success', ListItemsBySectionsSerializer(many=True)),
@@ -28,6 +29,7 @@ class ItemsListView(APIView):
 
 
     @swagger_auto_schema(
+        tags=["Items"],
         operation_description="Create a new item (Admin only)",
         request_body=CreateItemSerializer,
         responses={

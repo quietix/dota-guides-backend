@@ -14,9 +14,8 @@ class ItemSectionListView(APIView):
     permission_classes = (AllowAny,)
 
     @swagger_auto_schema(
-        tags=["item_section"],
+        tags=["Item Section"],
         operation_description="Retrieve all item sections",
-        operation_id="item_sections_list",
         responses={200: ListItemSectionsSerializer(many=True)}
     )
     def get(self, request):
@@ -26,9 +25,8 @@ class ItemSectionListView(APIView):
         return Response(serializer.data)
 
     @swagger_auto_schema(
-        tags=["item_section"],
+        tags=["Item Section"],
         operation_description="Create a new item section (Admin only)",
-        operation_id="create_item_section",
         request_body=CreateItemSectionSerializer,
         responses={
             201: ListItemSectionsSerializer,

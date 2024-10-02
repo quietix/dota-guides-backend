@@ -13,6 +13,6 @@ urlpatterns = [
     path('item-sections/', ItemSectionListView.as_view(), name='item_section_list'),
     path('item-sections/<str:id>/', ItemSectionDetailsView.as_view(), name='item_section_details'),
 
-    path('items/', ItemsListView.as_view(), name='items_list'),
+    path('items/', ItemListView.as_view(), name='items_list'),
     path('items/<str:id>/', ItemDetailsView.as_view(), name='item_details'),
 ]

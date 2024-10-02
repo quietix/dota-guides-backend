@@ -13,9 +13,8 @@ class ItemSectionDetailsView(APIView):
     permission_classes = (AllowAny,)
 
     @swagger_auto_schema(
-        tags=["item_section"],
+        tags=["Item Section"],
         operation_description="Retrieve specific Item Section by ID",
-        operation_id="item_section_detail",
         responses={
             200: ListItemSectionsSerializer,
             404: 'Item Section not found'
@@ -33,9 +32,8 @@ class ItemSectionDetailsView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(
-        tags=["item_section"],
+        tags=["Item Section"],
         operation_description="Update an existing item section (Admin only)",
-        operation_id="item_section_update",
         request_body=UpdateItemSectionSerializer,
         responses={
             200: ListItemSectionsSerializer,
@@ -65,9 +63,8 @@ class ItemSectionDetailsView(APIView):
                         status=status.HTTP_400_BAD_REQUEST)
 
     @swagger_auto_schema(
-        tags=["item_section"],
+        tags=["Item Section"],
         operation_description="Delete an item section (Admin only)",
-        operation_id="item_section_delete",
         responses={
             204: 'Item Section deleted successfully',
             404: 'Item Section not found'
