@@ -44,7 +44,8 @@ class ItemsView(APIView):
             return Response(ReadItemSerializer(item).data, status=status.HTTP_201_CREATED)
 
         logger.error(f"User {request.user.username} failed to create an item. Errors: {serializer.errors}.")
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(f"User {request.user.username} failed to create an item. Errors: {serializer.errors}.",
+                        status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request, id):
         self.permission_classes = [IsAdminUser]
@@ -77,5 +78,5 @@ class ItemsView(APIView):
             return Response({"error": f"Item #{id} not found"}, status=status.HTTP_404_NOT_FOUND)
 
         item.delete()
-        logger.info(f"User {request.user.username} deleted item #{item.id}")
-        return Response({"message": f"Item {item.id} deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        logger.info(f"User {request.user.username} deleted item #{id}")
+        return Response({"message": f"Item {id} deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
