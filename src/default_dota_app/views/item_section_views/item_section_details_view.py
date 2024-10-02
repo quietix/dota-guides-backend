@@ -16,7 +16,7 @@ class ItemSectionDetailsView(APIView):
         tags=["Item Section"],
         operation_description="Retrieve specific Item Section by ID",
         responses={
-            200: ListItemSectionsSerializer,
+            200: ReadItemSectionSerializer,
             404: 'Item Section not found'
         }
     )
@@ -27,16 +27,16 @@ class ItemSectionDetailsView(APIView):
             logger.error(f"User {request.user.username} failed to retrieve Item Section #{id}.")
             return Response({"error": "Item Section not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = ListItemSectionsSerializer(item_section)
+        serializer = ReadItemSectionSerializer(item_section)
         logger.info(f"Retrieved Item Section #{item_section.id}")
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(
         tags=["Item Section"],
         operation_description="Update an existing item section (Admin only)",
-        request_body=UpdateItemSectionSerializer,
+        request_body=UpsertItemSectionSerializer,
         responses={
-            200: ListItemSectionsSerializer,
+            200: ReadItemSectionSerializer,
             400: 'Invalid input',
             404: 'Item Section not found'
         }
@@ -51,12 +51,12 @@ class ItemSectionDetailsView(APIView):
             logger.error(f"User {request.user.username} failed to update Item Section #{id}. Item Section #{id} does not exist.")
             return Response({"error": f"Item Section #{id} not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = UpdateItemSectionSerializer(item_section, data=request.data, partial=True)
+        serializer = UpsertItemSectionSerializer(item_section, data=request.data, partial=True)
 
         if serializer.is_valid():
             updated_item_section = serializer.save()
             logger.info(f"Updated Item Section #{updated_item_section.id}")
-            return Response(ListItemSectionsSerializer(updated_item_section).data, status=status.HTTP_200_OK)
+            return Response(ReadItemSectionSerializer(updated_item_section).data, status=status.HTTP_200_OK)
 
         logger.error(f"User {request.user.username} failed to update Item Section #{id}. Errors: {serializer.errors}.")
         return Response(f"User {request.user.username} failed to update Item Section #{id}. Errors: {serializer.errors}.",

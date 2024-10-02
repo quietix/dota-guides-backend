@@ -17,7 +17,7 @@ class ItemDetailsView(APIView):
         tags=["Items"],
         operation_description="Retrieve specific item by ID",
         responses={
-            200: openapi.Response('Success', ListItemsBySectionsSerializer(many=True)),
+            200: openapi.Response('Success', ReadItemBySectionsSerializer(many=True)),
             404: 'Item not found'
         }
     )
@@ -36,7 +36,7 @@ class ItemDetailsView(APIView):
     @swagger_auto_schema(
         tags=["Items"],
         operation_description="Update an existing item (Admin only)",
-        request_body=UpdateItemSerializer,
+        request_body=UpsertItemSerializer,
         responses={
             200: ReadItemSerializer,
             400: 'Invalid input',
@@ -53,7 +53,7 @@ class ItemDetailsView(APIView):
             logger.error(f"User {request.user.username} failed to update item #{id}. Item #{id} does not exist.")
             return Response({"error": f"Item #{id} not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = UpdateItemSerializer(item, data=request.data, partial=True)
+        serializer = UpsertItemSerializer(item, data=request.data, partial=True)
 
         if serializer.is_valid():
             updated_item = serializer.save()

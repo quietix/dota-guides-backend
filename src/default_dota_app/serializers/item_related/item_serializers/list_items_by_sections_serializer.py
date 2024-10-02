@@ -3,7 +3,7 @@ from default_dota_app.models import ItemSection
 from default_dota_app.serializers.item_related.item_serializers.read_item_serializer import ReadItemSerializer
 
 
-class ListItemsBySectionsSerializer(serializers.ModelSerializer):
+class ReadItemBySectionsSerializer(serializers.ModelSerializer):
     items = ReadItemSerializer(many=True)
 
     class Meta:

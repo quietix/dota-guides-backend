@@ -16,20 +16,20 @@ class ItemSectionListView(APIView):
     @swagger_auto_schema(
         tags=["Item Section"],
         operation_description="Retrieve all item sections",
-        responses={200: ListItemSectionsSerializer(many=True)}
+        responses={200: ReadItemSectionSerializer(many=True)}
     )
     def get(self, request):
         logger.info("Getting all Item Sections")
         item_sections = ItemSection.objects.all()
-        serializer = ListItemSectionsSerializer(item_sections, many=True)
+        serializer = ReadItemSectionSerializer(item_sections, many=True)
         return Response(serializer.data)
 
     @swagger_auto_schema(
         tags=["Item Section"],
         operation_description="Create a new item section (Admin only)",
-        request_body=CreateItemSectionSerializer,
+        request_body=UpsertItemSectionSerializer,
         responses={
-            201: ListItemSectionsSerializer,
+            201: ReadItemSectionSerializer,
             400: 'Invalid input'
         }
     )
@@ -37,12 +37,12 @@ class ItemSectionListView(APIView):
         self.permission_classes = [IsAdminUser]
         self.check_permissions(request)
 
-        serializer = CreateItemSectionSerializer(data=request.data)
+        serializer = UpsertItemSectionSerializer(data=request.data)
 
         if serializer.is_valid():
             item_section = serializer.save()
             logger.info(f"Created Item Section #{item_section.id}")
-            return Response(ListItemSectionsSerializer(item_section).data, status=status.HTTP_201_CREATED)
+            return Response(ReadItemSectionSerializer(item_section).data, status=status.HTTP_201_CREATED)
 
         logger.error(f"User {request.user.username} failed to create an Item Section. Errors: {serializer.errors}.")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

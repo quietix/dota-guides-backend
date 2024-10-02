@@ -17,21 +17,21 @@ class ItemListView(APIView):
         tags=["Items"],
         operation_description="Retrieve all items or a specific item by ID",
         responses={
-            200: openapi.Response('Success', ListItemsBySectionsSerializer(many=True)),
+            200: openapi.Response('Success', ReadItemBySectionsSerializer(many=True)),
             404: 'Item not found'
         }
     )
     def get(self, request):
         logger.info("Getting all items")
         item_sections = ItemSection.objects.all().prefetch_related('items')
-        serializer = ListItemsBySectionsSerializer(item_sections, many=True)
+        serializer = ReadItemBySectionsSerializer(item_sections, many=True)
         return Response(serializer.data)
 
 
     @swagger_auto_schema(
         tags=["Items"],
         operation_description="Create a new item (Admin only)",
-        request_body=CreateItemSerializer,
+        request_body=UpsertItemSerializer,
         responses={
             201: ReadItemSerializer,
             400: 'Invalid input'
@@ -41,7 +41,7 @@ class ItemListView(APIView):
         self.permission_classes = [IsAdminUser]
         self.check_permissions(request)
 
-        serializer = CreateItemSerializer(data=request.data)
+        serializer = UpsertItemSerializer(data=request.data)
 
         if serializer.is_valid():
             item = serializer.save()
