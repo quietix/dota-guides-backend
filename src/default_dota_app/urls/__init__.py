@@ -13,6 +13,9 @@ urlpatterns = [
     path('guides/<str:id>/', GuideDetailsView.as_view()),
     path('guides/<str:hero_name>/create/', CreateGuideView.as_view()),
 
+    path('item-sections/', ItemSectionsView.as_view()),
+    path('item-sections/<str:id>/', ItemSectionsView.as_view()),
+
     path('items/', ItemsView.as_view()),
     path('items/<str:id>/', ItemsView.as_view()),
 

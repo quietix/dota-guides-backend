@@ -17,7 +17,7 @@ class ItemsView(APIView):
 
         logger.info("Getting all items")
         item_sections = ItemSection.objects.all().prefetch_related('items')
-        serializer = ItemSectionSerializer(item_sections, many=True)
+        serializer = ListItemsBySectionsSerializer(item_sections, many=True)
         return Response(serializer.data)
 
     def get_item(self, request, id):
@@ -25,7 +25,7 @@ class ItemsView(APIView):
             item = Item.objects.get(id=id)
         except Item.DoesNotExist:
             logger.error(f"User {request.user.username} failed to retrieve item #{id}.")
-            return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": f"Item #{id} not found"}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = ReadItemSerializer(item)
 
@@ -53,16 +53,17 @@ class ItemsView(APIView):
         try:
             item = Item.objects.get(id=id)
         except Item.DoesNotExist:
-            return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
+            logger.error(f"User {request.user.username} failed to update item #{id}. Item #{id} does not exist.")
+            return Response({"error": f"Item #{id} not found"}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = UpdateItemSerializer(item, data=request.data, partial=True)
 
         if serializer.is_valid():
             updated_item = serializer.save()
-            logger.info(f"Updated item #{item.id}")
+            logger.info(f"Updated item #{updated_item.id}")
             return Response(ReadItemSerializer(updated_item).data, status=status.HTTP_200_OK)
 
-        logger.error(f"User {request.user.username} failed to update an item. Errors: {serializer.errors}.")
+        logger.error(f"User {request.user.username} failed to update item #{id}. Errors: {serializer.errors}.")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id):
@@ -72,9 +73,9 @@ class ItemsView(APIView):
         try:
             item = Item.objects.get(id=id)
         except Item.DoesNotExist:
-            logger.error(f"User {request.user.username} failed to delete an item #{id}")
-            return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
+            logger.error(f"User {request.user.username} failed to delete item #{id}")
+            return Response({"error": f"Item #{id} not found"}, status=status.HTTP_404_NOT_FOUND)
 
         item.delete()
         logger.info(f"User {request.user.username} deleted item #{item.id}")
-        return Response({"message": "Item deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        return Response({"message": f"Item {item.id} deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
