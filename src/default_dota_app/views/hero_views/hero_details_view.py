@@ -19,16 +19,20 @@ class HeroDetailsView(APIView):
         operation_summary="Retrieve Hero Details",
         operation_description="Get detailed information about a hero by ID.",
         responses={
-            200: openapi.Response('Successful retrieval of hero details', ReadHeroDetailsSerializer),
+            200: openapi.Response('Successful retrieval of hero details', ReadHeroDetailsAsAdminSerializer),
             404: openapi.Response(description='Hero not found.'),
         }
     )
     def get(self, request, id):
-        if request.user.is_authenticated:
+        user = request.user
+
+        if user.is_authenticated and not user.is_superuser:
+            # TODO
             user_guides = Guide.objects.filter(user=request.user)
         else:
             admin_user = User.objects.filter(is_superuser=True).first()
             user_guides = Guide.objects.filter(user=admin_user)
+
 
         prefetch_user_guides = Prefetch('guides', queryset=user_guides)
         hero = Hero.objects.filter(id=id).prefetch_related('skills', prefetch_user_guides).first()
@@ -37,7 +41,7 @@ class HeroDetailsView(APIView):
             logger.error(f"Hero #{id} not found for retrieval.")
             return Response({"detail": "Hero not found."}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = ReadHeroDetailsSerializer(hero)
+        serializer = ReadHeroDetailsAsAdminSerializer(hero)
         logger.info(f"Retrieved details for hero #{id}.")
         return Response(serializer.data)
 
@@ -57,7 +61,7 @@ class HeroDetailsView(APIView):
             },
         ),
         responses={
-            200: openapi.Response('Hero updated successfully', ReadHeroDetailsSerializer),
+            200: openapi.Response('Hero updated successfully', ReadHeroDetailsAsAdminSerializer),
             400: openapi.Response(description='Invalid input data.'),
             403: openapi.Response(description='User does not have permission to update the hero.'),
             404: openapi.Response(description='Hero not found.'),

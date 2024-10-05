@@ -1,3 +1,3 @@
-from .read_hero_details_serializer import ReadHeroDetailsSerializer
+from .read_hero_details_as_admin_serializer import ReadHeroDetailsAsAdminSerializer
 from .read_hero_preview_serializer import ReadHeroPreviewSerializer
 from .upsert_hero_serializer import UpsertHeroSerializer
