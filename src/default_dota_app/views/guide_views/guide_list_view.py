@@ -12,7 +12,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class CreateGuideView(drf_views.APIView):
+class GuideListView(drf_views.APIView):
     @swagger_auto_schema(
         tags=["Guides"],
         operation_summary="Create a Guide",
