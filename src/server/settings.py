@@ -171,7 +171,6 @@ REST_KNOX = {
     'TOKEN_LIMIT_PER_USER': None,
     'AUTO_REFRESH': False,
     'MIN_REFRESH_INTERVAL': 60,
-    # 'AUTH_HEADER_PREFIX': 'Token',
     'TOKEN_MODEL': 'knox.AuthToken',
 }
 

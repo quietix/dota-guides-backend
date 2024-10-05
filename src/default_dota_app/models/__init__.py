@@ -1,4 +1,6 @@
 # Item related models
+from .item_related.item_section import ItemSection
+
 from .attribute_model import Attribute
 from .guide_model import Guide
 # Other models

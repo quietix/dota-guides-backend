@@ -1,2 +1,2 @@
 from .guide_details_view import GuideDetailsView
-from .create_guide_view import CreateGuideView
+from .guide_list_view import CreateGuideView

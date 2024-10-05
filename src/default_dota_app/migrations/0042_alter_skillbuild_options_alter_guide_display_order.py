@@ -20,6 +20,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='guide',
             name='display_order',
-            field=models.IntegerField(default=default_dota_app.models.guide_model.get_next_guide_order, validators=[django.core.validators.MinValueValidator(1)]),
+            field=models.IntegerField(default=1, validators=[django.core.validators.MinValueValidator(1)]),
         ),
     ]
