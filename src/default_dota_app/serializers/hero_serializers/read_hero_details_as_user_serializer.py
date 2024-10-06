@@ -8,8 +8,9 @@ from default_dota_app.serializers.guide_serializers import PreviewGuideSerialize
 class ReadHeroDetailsAsUserSerializer(serializers.ModelSerializer):
     attribute = AttributeSerializer(read_only=True)
     skills = SkillSerializer(many=True, read_only=True)
-    guides = PreviewGuideSerializer(many=True, read_only=True)
+    user_guides = PreviewGuideSerializer(many=True, read_only=True)
+    admin_guides = PreviewGuideSerializer(many=True, read_only=True)
 
     class Meta:
         model = Hero
-        fields = ('id', 'hero_name', 'img', 'attribute', 'skills', 'guides')
+        fields = ('id', 'hero_name', 'img', 'attribute', 'skills', 'user_guides', 'admin_guides')

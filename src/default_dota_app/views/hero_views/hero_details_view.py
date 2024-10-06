@@ -4,9 +4,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser
 from rest_framework.views import APIView
-from rest_framework.parsers import MultiPartParser
 from default_dota_app.models import *
 from default_dota_app.serializers.hero_serializers import *
+from default_dota_app.services import HeroService
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 import logging
@@ -19,31 +19,18 @@ class HeroDetailsView(APIView):
         operation_summary="Retrieve Hero Details",
         operation_description="Get detailed information about a hero by ID.",
         responses={
-            200: openapi.Response('Successful retrieval of hero details', ReadHeroDetailsAsAdminSerializer),
+            200: openapi.Response('Successful retrieval of hero details'),
             404: openapi.Response(description='Hero not found.'),
         }
     )
     def get(self, request, id):
         user = request.user
+        hero_data = HeroService.get_hero_details(id, user)
 
-        if user.is_authenticated and not user.is_superuser:
-            # TODO
-            user_guides = Guide.objects.filter(user=request.user)
-        else:
-            admin_user = User.objects.filter(is_superuser=True).first()
-            user_guides = Guide.objects.filter(user=admin_user)
-
-
-        prefetch_user_guides = Prefetch('guides', queryset=user_guides)
-        hero = Hero.objects.filter(id=id).prefetch_related('skills', prefetch_user_guides).first()
-
-        if not hero:
-            logger.error(f"Hero #{id} not found for retrieval.")
+        if hero_data is None:
             return Response({"detail": "Hero not found."}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = ReadHeroDetailsAsAdminSerializer(hero)
-        logger.info(f"Retrieved details for hero #{id}.")
-        return Response(serializer.data)
+        return Response(hero_data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(
         tags=["Heroes"],

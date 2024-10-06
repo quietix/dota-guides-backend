@@ -13,6 +13,8 @@ from .skill_related.skill_build_model import SkillBuild
 from .skill_related.skill_model import Skill
 from .skill_related.skill_order_model import SkillOrder
 
+from django.contrib.auth.models import User
+
 # Talent related models
 # from .talent_related.talent_model import Talent
 # from .talent_related.talent_wrapper_model import TalentWrapper
