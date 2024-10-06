@@ -1,15 +1,14 @@
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.db import models
-from django.db.models import Max
-
 from default_dota_app.models.hero_model import Hero
 
 
-class Guide(models.Model):
-    def get_admin_user(self):
-        return User.objects.filter(is_superuser=True).first().id or User.objects.filter(is_staff=True).first().id
+def get_admin_user():
+    return User.objects.filter(is_superuser=True).first()
 
+
+class Guide(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=get_admin_user, related_name='guides')
     hero = models.ForeignKey(Hero, null=True, on_delete=models.SET_NULL, related_name='guides')
     guide_title = models.CharField(max_length=200)
