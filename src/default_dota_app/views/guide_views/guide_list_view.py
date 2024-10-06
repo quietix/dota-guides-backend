@@ -13,6 +13,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 class CreateGuideView(drf_views.APIView):
+    permission_classes = [IsAuthenticated]
+
     @swagger_auto_schema(
         tags=["Guides"],
         operation_summary="Create a Guide",
@@ -28,10 +30,10 @@ class CreateGuideView(drf_views.APIView):
         }
     )
     def post(self, request):
-        self.permission_classes = [IsAuthenticated]
-        self.check_permissions(request)
+        data = request.data.copy()
+        data['user'] = request.user.id
 
-        serializer = UpsertGuideSerializer(data=request.data)
+        serializer = UpsertGuideSerializer(data=data)
 
         if serializer.is_valid():
             guide = serializer.save()
