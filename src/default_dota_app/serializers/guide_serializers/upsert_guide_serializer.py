@@ -11,4 +11,4 @@ class UpsertGuideSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=Guide
-        fields=('hero', 'display_order', 'guide_title', 'guide_description')
+        fields=('hero', 'user', 'display_order', 'guide_title', 'guide_description')
