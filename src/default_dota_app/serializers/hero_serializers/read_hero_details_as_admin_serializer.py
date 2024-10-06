@@ -5,7 +5,7 @@ from default_dota_app.serializers.attribute_serializer import AttributeSerialize
 from default_dota_app.serializers.guide_serializers import PreviewGuideSerializer
 
 
-class ReadHeroDetailsSerializer(serializers.ModelSerializer):
+class ReadHeroDetailsAsAdminSerializer(serializers.ModelSerializer):
     attribute = AttributeSerializer(read_only=True)
     skills = SkillSerializer(many=True, read_only=True)
     guides = PreviewGuideSerializer(many=True, read_only=True)
