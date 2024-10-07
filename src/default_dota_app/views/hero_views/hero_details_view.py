@@ -52,7 +52,7 @@ class HeroDetailsView(APIView):
         }
     )
     def patch(self, request, id):
-        self.authentication_classes = [IsAdminUser]
+        self.permission_classes = [IsAdminUser]
         self.check_permissions(request)
 
         updated_hero = HeroService.patch_hero(request, id)
@@ -77,7 +77,7 @@ class HeroDetailsView(APIView):
         }
     )
     def delete(self, request, id):
-        self.authentication_classes = [IsAdminUser]
+        self.permission_classes = [IsAdminUser]
         self.check_permissions(request)
 
         is_delete_succeeded = HeroService.delete_hero(request, id)

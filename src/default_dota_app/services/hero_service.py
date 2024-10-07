@@ -6,6 +6,23 @@ logger = logging.getLogger(__name__)
 
 class HeroService:
     @staticmethod
+    def get_hero_list(request):
+        hero_name = request.GET.get('hero_name', None)
+        attribute_name = request.GET.get('attribute_name', None)
+
+        filters = {}
+        if hero_name:
+            filters['hero_name__icontains'] = hero_name
+        if attribute_name:
+            filters['attribute__attribute_name__icontains'] = attribute_name
+
+        logger.info(f'Filtering heroes by: {filters}')
+
+        heroes = HeroRepository.get_hero_list(**filters)
+        serializer = ReadHeroPreviewSerializer(heroes, many=True)
+        return serializer.data
+
+    @staticmethod
     def get_hero_details(hero_id, user):
         if UserRepository.is_user_non_admin(user):
             hero = HeroRepository.get_hero_with_user_guides(hero_id, user.id)
@@ -24,6 +41,17 @@ class HeroService:
         return serializer.data
 
     @staticmethod
+    def create_hero(request):
+        serializer = UpsertHeroSerializer(data=request.data)
+        hero = HeroRepository.save_hero(serializer)
+
+        if hero:
+            logger.info(f"User {request.user} created hero #{hero.id}.")
+            return ReadHeroPreviewSerializer(hero).data
+
+        logger.error(f"User {request.user} failed to create hero.")
+
+    @staticmethod
     def patch_hero(request, hero_id):
         hero = HeroRepository.get_hero_with_admin_guides(hero_id)
 
@@ -35,9 +63,10 @@ class HeroService:
         hero = HeroRepository.save_hero(serializer)
 
         if hero:
+            logger.info(f"User {request.user} updated hero #{hero.id}.")
             return ReadHeroPreviewSerializer(hero).data
 
-        logger.error(f"Failed to update hero #{hero_id}. Saving operation failed.")
+        logger.error(f"User {request.user} failed to update hero.")
 
     @staticmethod
     def delete_hero(request, hero_id):
@@ -51,19 +80,3 @@ class HeroService:
         logger.error(f"Hero #{hero_id} not found for deletion.")
         return False
 
-    @staticmethod
-    def get_hero_list(request):
-        hero_name = request.GET.get('hero_name', None)
-        attribute_name = request.GET.get('attribute_name', None)
-
-        filters = {}
-        if hero_name:
-            filters['hero_name__icontains'] = hero_name
-        if attribute_name:
-            filters['attribute__attribute_name__icontains'] = attribute_name
-
-        logger.info(f'Filtering heroes by: {filters}')
-
-        heroes = HeroRepository.get_hero_list(**filters)
-        serializer = ReadHeroPreviewSerializer(heroes, many=True)
-        return serializer.data
