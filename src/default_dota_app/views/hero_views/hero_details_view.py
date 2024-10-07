@@ -58,21 +58,13 @@ class HeroDetailsView(APIView):
         self.authentication_classes = [IsAdminUser]
         self.check_permissions(request)
 
-        try:
-            hero = Hero.objects.get(id=id)
-            serializer = UpsertHeroSerializer(hero, data=request.data, partial=True)
+        updated_hero = HeroService.patch_hero(request, id)
 
-            if serializer.is_valid():
-                hero = serializer.save()
-                logger.info(f"User {request.user} updated details for hero #{id}.")
-                return Response(ReadHeroPreviewSerializer(hero).data, status=status.HTTP_200_OK)
-
-            logger.error(f"Failed to update hero #{id}. Errors: {serializer.errors}.")
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        except Hero.DoesNotExist:
-            logger.error(f"Hero #{id} not found for update.")
-            return Response({"detail": "Hero not found."}, status=status.HTTP_404_NOT_FOUND)
+        if updated_hero:
+            logger.info(f"User {request.user} updated details for hero #{id}.")
+            return Response(updated_hero, status=status.HTTP_200_OK)
+        else:
+            return Response({"detail": "Update failed."}, status=status.HTTP_400_BAD_REQUEST)
 
     @swagger_auto_schema(
         tags=["Heroes"],
@@ -91,12 +83,8 @@ class HeroDetailsView(APIView):
         self.authentication_classes = [IsAdminUser]
         self.check_permissions(request)
 
-        try:
-            hero = Hero.objects.get(id=id)
-            hero.delete()
-            logger.info(f"User {request.user} deleted hero #{id}.")
-            return Response({"detail": "Hero deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+        is_delete_succeeded = HeroService.delete_hero(request, id)
 
-        except Hero.DoesNotExist:
-            logger.error(f"Hero #{id} not found for deletion.")
-            return Response({"detail": "Hero not found."}, status=status.HTTP_404_NOT_FOUND)
+        if is_delete_succeeded:
+            return Response({f"Hero #{id} is successfully deleted."})
+        return Response({"detail": "Delete failed."}, status=status.HTTP_400_BAD_REQUEST)
