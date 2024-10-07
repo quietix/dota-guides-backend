@@ -2,8 +2,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from default_dota_app.models import *
-from default_dota_app.serializers.hero_serializers import *
+from default_dota_app.serializers.hero_serializers import ReadHeroPreviewSerializer, UpsertHeroSerializer
 from default_dota_app.services import HeroService
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
@@ -56,11 +55,8 @@ class HeroListView(APIView):
         self.permission_classes = [IsAdminUser]
         self.check_permissions(request)
 
-        serializer = UpsertHeroSerializer(data=request.data)
-        if serializer.is_valid():
-            hero = serializer.save()
-            logger.info(f"User {request.user} created hero #{hero.id}.")
-            return Response(ReadHeroPreviewSerializer(hero).data, status=status.HTTP_201_CREATED)
+        created_hero = HeroService.create_hero(request)
 
-        logger.error(f"Failed to create hero. User: {request.user}, Errors: {serializer.errors}.")
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if created_hero:
+            return Response(created_hero, status=status.HTTP_200_OK)
+        return Response({"detail": "Create hero failed."}, status=status.HTTP_400_BAD_REQUEST)

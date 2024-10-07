@@ -2,7 +2,9 @@ from django.db.models import Prefetch
 from default_dota_app.models import Hero, Guide
 from default_dota_app.repositories.user_repository import UserRepository
 from default_dota_app.serializers.hero_serializers import UpsertHeroSerializer
+import logging
 
+logger = logging.getLogger(__name__)
 
 class HeroRepository:
     @staticmethod
@@ -29,6 +31,7 @@ class HeroRepository:
     def save_hero(serializer: UpsertHeroSerializer):
         if serializer.is_valid():
             return serializer.save()
+        logger.error(f"Failed to save hero. Errors: {serializer.errors}")
 
     @staticmethod
     def get_bare_hero(hero_id):
