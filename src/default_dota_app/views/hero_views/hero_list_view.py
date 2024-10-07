@@ -20,7 +20,13 @@ class HeroListView(APIView):
             openapi.Parameter(
                 'hero_name',
                 openapi.IN_QUERY,
-                description="Filter heroes by their name",
+                description="Filter heroes by their name (hero_name contains input)",
+                type=openapi.TYPE_STRING
+            ),
+            openapi.Parameter(
+                'attribute_name',
+                openapi.IN_QUERY,
+                description="Filter heroes by attribute (attribute_name contains input)",
                 type=openapi.TYPE_STRING
             )
         ],
