@@ -1,9 +1,7 @@
-from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import views as drf_views
-from default_dota_app.models import *
 from default_dota_app.serializers import *
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
