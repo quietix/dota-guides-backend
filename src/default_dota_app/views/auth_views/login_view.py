@@ -20,11 +20,18 @@ class LoginView(knox_views.LoginView):
     )
     def post(self, request, format=None):
         serializer = LoginSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
+
+        if serializer.is_valid(raise_exception=False):
             user = serializer.validated_data['user']
             login(request, user)
             logger.info(f"Successful login attempt for user: {user.username}")
             return super(LoginView, self).post(request, format=None)
         else:
             logger.warning(f"Unsuccessful login attempt. errors: {serializer.errors}")
-            return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            errors = serializer.errors
+
+            if 'non_field_errors' in errors:
+                errors.pop('non_field_errors')
+                return Response({'Authentication Failed': "Email or password is wrong."}, status=status.HTTP_400_BAD_REQUEST)
+
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
