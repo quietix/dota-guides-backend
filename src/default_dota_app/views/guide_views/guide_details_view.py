@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import views as drf_views
@@ -8,17 +7,12 @@ from default_dota_app.serializers import *
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 import logging
+from default_dota_app.services import GuideService
 
 
 logger = logging.getLogger(__name__)
 
 class GuideDetailsView(drf_views.APIView):
-    def get_user_or_admin(self, request):
-        if request.user.is_authenticated:
-            return request.user
-        else:
-            return User.objects.filter(is_superuser=True).first()
-
     @swagger_auto_schema(
         tags=["Guides"],
         operation_summary="Retrieve Guide Details",
@@ -29,14 +23,14 @@ class GuideDetailsView(drf_views.APIView):
         }
     )
     def get(self, request, id):
-        user = self.get_user_or_admin(request)
-        try:
-            guide = Guide.objects.get(user=user, id=id)
-            serializer = DetailedGuideSerializer(guide)
-            return Response(serializer.data)
-        except Guide.DoesNotExist:
-            return Response({"detail:" "Guide with such ID is not found for this user."}, status=status.HTTP_404_NOT_FOUND)
+        guide_data = GuideService.get_guide(request, id)
 
+        if guide_data:
+            return Response(guide_data, status=status.HTTP_200_OK)
+
+        return Response({"detail": f"Guide #{id} not found."}, status=status.HTTP_404_NOT_FOUND)
+
+    # TODO patch, delete
     @swagger_auto_schema(
         tags=["Guides"],
         operation_summary="Update an Existing Guide",
