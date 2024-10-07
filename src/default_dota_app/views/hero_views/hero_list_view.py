@@ -4,10 +4,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from default_dota_app.models import *
 from default_dota_app.serializers.hero_serializers import *
+from default_dota_app.services import HeroService
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 import logging
-
 
 logger = logging.getLogger(__name__)
 
@@ -29,15 +29,10 @@ class HeroListView(APIView):
         }
     )
     def get(self, request):
-        hero_name = request.GET.get('hero_name', None)
-
-        if hero_name:
-            heroes = Hero.objects.filter(hero_name__icontains=hero_name).prefetch_related('skills')
-        else:
-            heroes = Hero.objects.all().prefetch_related('skills')
-
-        serializer = ReadHeroPreviewSerializer(heroes, many=True)
-        return Response(serializer.data)
+        hero_list_data = HeroService.get_hero_list(request)
+        if hero_list_data:
+            return Response(hero_list_data)
+        return Response({"detail": "Failed to retrieve heroes."}, status=status.HTTP_400_BAD_REQUEST)
 
     @swagger_auto_schema(
         tags=["Heroes"],

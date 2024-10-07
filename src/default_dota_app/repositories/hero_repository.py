@@ -33,3 +33,9 @@ class HeroRepository:
     @staticmethod
     def get_bare_hero(hero_id):
         return Hero.objects.filter(id=hero_id).first()
+
+    @staticmethod
+    def get_hero_list(**kwargs):
+        if kwargs:
+            return Hero.objects.filter(**kwargs)
+        return Hero.objects.all()

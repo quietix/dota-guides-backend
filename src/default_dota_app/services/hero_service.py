@@ -4,7 +4,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-
 class HeroService:
     @staticmethod
     def get_hero_details(hero_id, user):
@@ -51,3 +50,20 @@ class HeroService:
 
         logger.error(f"Hero #{hero_id} not found for deletion.")
         return False
+
+    @staticmethod
+    def get_hero_list(request):
+        hero_name = request.GET.get('hero_name', None)
+        attribute_name = request.GET.get('attribute_name', None)
+
+        filters = {}
+        if hero_name:
+            filters['hero_name__icontains'] = hero_name
+        if attribute_name:
+            filters['attribute__attribute_name__icontains'] = attribute_name
+
+        logger.info(f'Filtering heroes by: {filters}')
+
+        heroes = HeroRepository.get_hero_list(**filters)
+        serializer = ReadHeroPreviewSerializer(heroes, many=True)
+        return serializer.data
