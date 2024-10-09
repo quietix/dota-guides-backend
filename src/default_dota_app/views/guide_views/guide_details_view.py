@@ -19,12 +19,12 @@ class GuideDetailsView(drf_views.APIView):
         operation_description="Retrieve a guide by its ID for the authenticated user or the admin."
     )
     def get(self, request, id):
-        guide_data = GuideService.get_guide(request, id)
+        guide_data, errors = GuideService.get_guide(request, id)
 
         if guide_data:
             return Response(guide_data, status=status.HTTP_200_OK)
-
-        return Response({"detail": f"Guide #{id} not found."}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
     @swagger_auto_schema(
         tags=["Guides"],

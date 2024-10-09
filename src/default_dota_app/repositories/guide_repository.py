@@ -20,7 +20,7 @@ class GuideRepository:
         return Guide.objects.filter(id=guide_id).first()
 
     @classmethod
-    def get_guide_for_non_admin_user(cls, guide_id: int, user: User) -> tuple[Optional[Guide], Optional[dict]]:
+    def get_guide_for_non_admin_user(cls, guide_id: int, user: User) -> Optional[Guide]:
         """
         Get guide that belongs to either admin or user
         """
@@ -28,13 +28,14 @@ class GuideRepository:
             admin_user = UserRepository.get_admin_user()
 
             if admin_user:
-                return Guide.objects.filter(Q(user=user) | Q(user=admin_user), id=guide_id).first(), None
+                return Guide.objects.filter(Q(user=user) | Q(user=admin_user), id=guide_id).first()
             else:
-                logger.error("Failed to find admin user.")
-                return None, cls._generate_error_message("Something went wrong. Try again.")
+                logger.warning("Failed to find admin user.")
+                return None
 
         else:
-            return None, {"details": "The user cannot access this guide."}
+            logger.warning("User is either admin or not authed.")
+            return None
 
     @classmethod
     def get_guide_for_authed_user(cls, guide_id: int, user: User) -> Optional[Guide]:
