@@ -1,14 +1,12 @@
-from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import views as drf_views
-from default_dota_app.models import *
-from default_dota_app.serializers import *
+from default_dota_app.serializers import UpsertGuideSerializer, DetailedGuideSerializer
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 import logging
-
+from default_dota_app.services import GuideService
 
 logger = logging.getLogger(__name__)
 
@@ -30,16 +28,9 @@ class CreateGuideView(drf_views.APIView):
         }
     )
     def post(self, request):
-        data = request.data.copy()
-        data['user'] = request.user.id
+        create_guide_data = GuideService.create_guide(request)
 
-        serializer = UpsertGuideSerializer(data=data)
+        if create_guide_data:
+            return Response(create_guide_data, status=status.HTTP_201_CREATED)
 
-        if serializer.is_valid():
-            guide = serializer.save()
-            logger.info(f"Created Guide #{guide.id}")
-            return Response(DetailedGuideSerializer(guide).data, status=status.HTTP_201_CREATED)
-
-        logger.error(f"User {request.user} failed to create Guide. Errors: {serializer.errors}.")
-        return Response(f"User {request.user} failed to create Guide. Errors: {serializer.errors}.",
-                        status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail": "Create hero failed."}, status=status.HTTP_400_BAD_REQUEST)
