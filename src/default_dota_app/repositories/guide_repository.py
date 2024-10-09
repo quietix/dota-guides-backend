@@ -45,13 +45,13 @@ class GuideRepository:
         return Guide.objects.filter(user=user, id=guide_id).first()
 
     @classmethod
-    def get_guide_for_unauthed_user(cls, guide_id: int) -> tuple[Optional[Guide], Optional[dict]]:
+    def get_guide_for_unauthed_user(cls, guide_id: int) -> Optional[Guide]:
         admin_user = UserRepository.get_admin_user()
 
         if admin_user:
-            return Guide.objects.filter(id=guide_id, user=admin_user).first(), None
+            return Guide.objects.filter(id=guide_id, user=admin_user).first()
         else:
-            return None, cls._generate_error_message("Something went wrong. Try again.")
+            return None
 
     @classmethod
     def save_guide(cls, serializer: UpsertGuideSerializer) -> tuple[Optional[Guide], Optional[dict]]:
