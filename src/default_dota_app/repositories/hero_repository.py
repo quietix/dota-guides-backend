@@ -11,7 +11,7 @@ class HeroRepository:
     def get_hero_with_admin_guides(hero_id, admin_username="admin"):
         admin_user = UserRepository.get_admin_user(admin_username)
         admin_guides = Guide.objects.filter(user=admin_user)
-        prefetch_admin_guides = Prefetch('guides', queryset=admin_guides)
+        prefetch_admin_guides = Prefetch('guides', queryset=admin_guides, to_attr='admin_guides')
         return Hero.objects.filter(id=hero_id).prefetch_related('skills', prefetch_admin_guides).first()
 
     @staticmethod
