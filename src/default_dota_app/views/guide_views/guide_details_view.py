@@ -55,6 +55,6 @@ class GuideDetailsView(drf_views.APIView):
         is_deleted, errors = GuideService.delete_guide(request, id)
 
         if is_deleted:
-            return Response({"detail": "Guide successfully deleted."}, status=status.HTTP_204_NO_CONTENT)
+            return Response({"detail": "Guide successfully deleted."}, status=status.HTTP_200_OK)
         else:
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
