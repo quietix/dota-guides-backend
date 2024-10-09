@@ -16,11 +16,7 @@ class GuideDetailsView(drf_views.APIView):
     @swagger_auto_schema(
         tags=["Guides"],
         operation_summary="Retrieve Guide Details",
-        operation_description="Retrieve a guide by its ID for the authenticated user or the admin.",
-        responses={
-            200: openapi.Response('Successful retrieval of guide details', DetailedGuideSerializer),
-            404: openapi.Response('Guide not found for this user.'),
-        }
+        operation_description="Retrieve a guide by its ID for the authenticated user or the admin."
     )
     def get(self, request, id):
         guide_data = GuideService.get_guide(request, id)
@@ -30,62 +26,35 @@ class GuideDetailsView(drf_views.APIView):
 
         return Response({"detail": f"Guide #{id} not found."}, status=status.HTTP_404_NOT_FOUND)
 
-    # TODO patch, delete
     @swagger_auto_schema(
         tags=["Guides"],
         operation_summary="Update an Existing Guide",
         operation_description="Update an existing guide by its ID for the authenticated user.",
-        request_body=UpsertGuideSerializer,
-        responses={
-            200: openapi.Response('Successful update of the guide', UpsertGuideSerializer),
-            400: openapi.Response('Invalid input data'),
-            404: openapi.Response('Guide not found for this user.'),
-        }
+        request_body=UpsertGuideSerializer
     )
     def patch(self, request, id):
         self.permission_classes = [IsAuthenticated]
         self.check_permissions(request)
 
-        user = request.user
+        updated_guide_data, errors = GuideService.patch_guide(request, id)
 
-        try:
-            guide = Guide.objects.get(user=user, id=id)
-            serializer = UpsertGuideSerializer(guide, data=request.data, partial=True)
-
-            if serializer.is_valid():
-                serializer.save()
-                logger.info(f"User {user} has updated Guide #{id}")
-                return Response(serializer.data, status=status.HTTP_200_OK)
-
-            logger.error(f"User {user} has failed to update Guide #{id}. Errors: {serializer.errors}.")
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        except Guide.DoesNotExist:
-            logger.error(f"User {user} has failed to update Guide #{id}. Guide #{id} does not exist.")
-            return Response({"detail": "Guide with such ID is not found for this user."},
-                            status=status.HTTP_404_NOT_FOUND)
+        if updated_guide_data:
+            return Response(updated_guide_data, status=status.HTTP_200_OK)
+        else:
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
     @swagger_auto_schema(
         tags=["Guides"],
         operation_summary="Delete a Guide",
-        operation_description="Delete a guide by its ID for the authenticated user.",
-        responses={
-            204: openapi.Response('Guide successfully deleted.'),
-            404: openapi.Response('Guide not found for this user.'),
-        }
+        operation_description="Delete a guide by its ID for the authenticated user."
     )
     def delete(self, request, id):
         self.permission_classes = [IsAuthenticated]
         self.check_permissions(request)
 
-        user = request.user
+        is_deleted, errors = GuideService.delete_guide(request, id)
 
-        try:
-            guide = Guide.objects.get(user=user, id=id)
-            guide.delete()
+        if is_deleted:
             return Response({"detail": "Guide successfully deleted."}, status=status.HTTP_204_NO_CONTENT)
-        except Guide.DoesNotExist:
-            return Response({"detail": "Guide with such ID is not found for this user."},
-                            status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({"detail": e}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
