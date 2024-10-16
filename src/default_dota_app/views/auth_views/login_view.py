@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 class LoginView(knox_views.LoginView):
     permission_classes = (AllowAny,)
+    authentication_classes = []
     serializer_class = LoginSerializer
 
     @swagger_auto_schema(
