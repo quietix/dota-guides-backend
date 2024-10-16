@@ -1,5 +1,5 @@
 from rest_framework import status
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from default_dota_app.serializers.hero_serializers import ReadHeroPreviewSerializer, UpsertHeroSerializer
@@ -11,6 +11,9 @@ import logging
 logger = logging.getLogger(__name__)
 
 class HeroListView(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
     @swagger_auto_schema(
         tags=["Heroes"],
         operation_summary="Retrieve All Heroes",
