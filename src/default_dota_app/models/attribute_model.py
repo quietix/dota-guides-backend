@@ -9,7 +9,7 @@ def get_next_display_order():
 
 
 class Attribute(models.Model):
-    attribute_name = models.CharField(max_length=30)
+    attribute_name = models.CharField(max_length=30, unique=True)
     img = models.ImageField(null=True, blank=True, upload_to='attributes')
     display_order = models.IntegerField(
         default=get_next_display_order,
