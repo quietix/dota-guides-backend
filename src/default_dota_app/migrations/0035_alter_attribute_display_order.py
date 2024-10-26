@@ -16,6 +16,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='attribute',
             name='display_order',
-            field=models.IntegerField(default=default_dota_app.models.attribute_model.get_next_display_order, validators=[django.core.validators.MinValueValidator(1)]),
+            field=models.IntegerField(default=1, validators=[django.core.validators.MinValueValidator(1)]),
         ),
     ]
