@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import views as drf_views
-from default_dota_app.auth.admin_or_self_permission import IsAdminOrSelf
+from rest_framework.permissions import IsAuthenticated
 from knox.models import AuthToken
 from default_dota_app.serializers.user_serializers import *
 from drf_yasg.utils import swagger_auto_schema
@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class ProfileView(drf_views.APIView):
-    permission_classes = (IsAdminOrSelf,)
+    permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
         responses={200: ReadUserSerializer},
