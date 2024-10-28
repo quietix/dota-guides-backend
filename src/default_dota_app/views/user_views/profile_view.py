@@ -15,6 +15,7 @@ class ProfileView(drf_views.APIView):
     permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
+        tags=["Profile"],
         responses={200: ReadUserSerializer},
         operation_summary="Get User Profile",
         operation_description="Retrieve the profile of the currently authenticated user."
@@ -25,6 +26,7 @@ class ProfileView(drf_views.APIView):
         return Response(serializer.data)
 
     @swagger_auto_schema(
+        tags=["Profile"],
         request_body=UpdateUserSerializer,
         responses={
             200: ReadUserSerializer,
@@ -49,6 +51,7 @@ class ProfileView(drf_views.APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @swagger_auto_schema(
+        tags=["Profile"],
         responses={
             204: "User successfully deleted.",
             403: "Forbidden - You cannot delete this user."
