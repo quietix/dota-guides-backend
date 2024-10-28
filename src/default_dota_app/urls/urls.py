@@ -2,7 +2,8 @@ from django.urls import path
 from default_dota_app.views import *
 
 urlpatterns = [
-    path('attributes/', AttributesView.as_view(), name='attributes_list'),
+    path('attributes/', AttributeListView.as_view(), name='attribute_list'),
+    path('attributes/<int:id>/', AttributeDetailsView.as_view(), name='attribute_details'),
 
     path('heroes/', HeroListView.as_view(), name='hero_list'),
     path('heroes/<str:id>/', HeroDetailsView.as_view(), name='hero_details'),

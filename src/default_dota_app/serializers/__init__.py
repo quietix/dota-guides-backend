@@ -5,4 +5,4 @@ from .item_related import *
 from .skill_related import *
 from .talent_related import *
 from .user_serializers import *
-from .attribute_serializer import AttributeSerializer
+from .attribute_serializers import *

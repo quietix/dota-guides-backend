@@ -32,7 +32,7 @@ class UserRepository:
     def is_user_authed(user: User) -> bool:
         return user.is_authenticated
 
-    @staticmethod
-    def is_user_authed(request: Request) -> bool:
-        user = UserRepository.get_user_from_request(request)
+    @classmethod
+    def is_user_authed(cls, request: Request) -> bool:
+        user = cls.get_user_from_request(request)
         return user.is_authenticated

@@ -5,7 +5,6 @@ from rest_framework import views as drf_views
 from rest_framework.permissions import IsAdminUser
 from default_dota_app.serializers.user_serializers import *
 from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
 import logging
 
 logger = logging.getLogger(__name__)
@@ -15,9 +14,10 @@ class UserView(drf_views.APIView):
     permission_classes = (IsAdminUser,)
 
     @swagger_auto_schema(
+        tags=["Admin Actions: Users"],
         responses={200: ReadUserSerializer, 404: "User not found."},
         operation_summary="Get User Details",
-        operation_description="Retrieve the details of a user by their ID."
+        operation_description="Retrieve the details of a user by their ID.",
     )
     def get(self, request, id):
         try:
@@ -29,6 +29,7 @@ class UserView(drf_views.APIView):
         return Response(serializer.data)
 
     @swagger_auto_schema(
+        tags=["Admin Actions: Users"],
         request_body=UpdateUserSerializer,
         responses={
             200: ReadUserSerializer,
@@ -36,7 +37,7 @@ class UserView(drf_views.APIView):
             404: "User not found."
         },
         operation_summary="Update User Details",
-        operation_description="Update the details of a user by their ID."
+        operation_description="Update the details of a user by their ID.",
     )
     def patch(self, request, id):
         try:
@@ -58,12 +59,13 @@ class UserView(drf_views.APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @swagger_auto_schema(
+        tags=["Admin Actions: Users"],
         responses={
             204: "User successfully deleted.",
             404: "User not found."
         },
         operation_summary="Delete User",
-        operation_description="Delete a user by their ID."
+        operation_description="Delete a user by their ID.",
     )
     def delete(self, request, id):
         try:

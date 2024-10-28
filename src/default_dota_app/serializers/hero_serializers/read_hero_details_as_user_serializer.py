@@ -1,12 +1,12 @@
 from rest_framework import serializers
 from default_dota_app.models import Hero
 from default_dota_app.serializers.skill_related import SkillSerializer
-from default_dota_app.serializers.attribute_serializer import AttributeSerializer
+from default_dota_app.serializers.attribute_serializers.read_attribute_serializer import ReadAttributeSerializer
 from default_dota_app.serializers.guide_serializers import PreviewGuideSerializer
 
 
 class ReadHeroDetailsAsUserSerializer(serializers.ModelSerializer):
-    attribute = AttributeSerializer(read_only=True)
+    attribute = ReadAttributeSerializer(read_only=True)
     skills = SkillSerializer(many=True, read_only=True)
     user_guides = PreviewGuideSerializer(many=True, read_only=True)
     admin_guides = PreviewGuideSerializer(many=True, read_only=True)
