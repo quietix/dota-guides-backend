@@ -1,0 +1,2 @@
+from .attribute_list_view import AttributeListView
+from .attribute_details_view import AttributeDetailsView

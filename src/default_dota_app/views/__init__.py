@@ -1,4 +1,4 @@
-from .attribute_views import AttributesView
+from .attribute_views import *
 from .guide_views import *
 from .user_views import *
 from .auth_views import *
