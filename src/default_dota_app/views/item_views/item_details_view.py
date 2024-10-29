@@ -11,7 +11,17 @@ import logging
 logger = logging.getLogger(__name__)
 
 class ItemDetailsView(APIView):
-    permission_classes = (AllowAny,)
+    def get_authenticators(self):
+        if self.request.method == 'GET':
+            return []
+        else:
+            return super().get_authenticators()
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        else:
+            return [IsAdminUser()]
 
     @swagger_auto_schema(
         tags=["Items"],

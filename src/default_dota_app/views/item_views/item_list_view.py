@@ -1,5 +1,5 @@
 from rest_framework import status
-from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from default_dota_app.models import *
@@ -11,7 +11,17 @@ import logging
 logger = logging.getLogger(__name__)
 
 class ItemListView(APIView):
-    permission_classes = (AllowAny,)
+    def get_authenticators(self):
+        if self.request.method == 'GET':
+            return []
+        else:
+            return super().get_authenticators()
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        else:
+            return [IsAdminUser()]
 
     @swagger_auto_schema(
         tags=["Items"],

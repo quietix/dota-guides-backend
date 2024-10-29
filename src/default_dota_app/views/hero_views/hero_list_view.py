@@ -11,8 +11,17 @@ import logging
 logger = logging.getLogger(__name__)
 
 class HeroListView(APIView):
-    permission_classes = [AllowAny]
-    authentication_classes = []
+    def get_authenticators(self):
+        if self.request.method == 'GET':
+            return []
+        else:
+            return super().get_authenticators()
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        else:
+            return [IsAdminUser()]
 
     @swagger_auto_schema(
         tags=["Heroes"],
@@ -55,9 +64,6 @@ class HeroListView(APIView):
     )
 
     def post(self, request):
-        self.permission_classes = [IsAdminUser]
-        self.check_permissions(request)
-
         created_hero = HeroService.create_hero(request)
 
         if created_hero:
