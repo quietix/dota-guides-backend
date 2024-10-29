@@ -1,6 +1,6 @@
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.views import APIView
 from default_dota_app.serializers.hero_serializers import ReadHeroDetailsAsAdminSerializer
 from default_dota_app.services import HeroService
@@ -11,6 +11,18 @@ import logging
 logger = logging.getLogger(__name__)
 
 class HeroDetailsView(APIView):
+    def get_authenticators(self):
+        if self.request.method == 'GET':
+            return []
+        else:
+            return super().get_authenticators()
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        else:
+            return [IsAdminUser()]
+
     @swagger_auto_schema(
         tags=["Heroes"],
         operation_summary="Retrieve Hero Details",
@@ -52,9 +64,6 @@ class HeroDetailsView(APIView):
         }
     )
     def patch(self, request, id):
-        self.permission_classes = [IsAdminUser]
-        self.check_permissions(request)
-
         updated_hero = HeroService.patch_hero(request, id)
 
         if updated_hero:
@@ -77,9 +86,6 @@ class HeroDetailsView(APIView):
         }
     )
     def delete(self, request, id):
-        self.permission_classes = [IsAdminUser]
-        self.check_permissions(request)
-
         is_delete_succeeded = HeroService.delete_hero(request, id)
 
         if is_delete_succeeded:
