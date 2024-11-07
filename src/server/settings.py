@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'storages',
     'drf_yasg',
-    'knox'
+    'knox',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -66,6 +67,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # My middleware
     'djangorestframework_camel_case.middleware.CamelCaseMiddleWare',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'server.urls'
@@ -263,3 +265,5 @@ SWAGGER_SETTINGS = {
     },
     'USE_SESSION_AUTH': False,
 }
+
+CORS_ALLOW_ALL_ORIGINS = bool(int(os.environ['CORS_ALLOW_ALL_ORIGINS']))
