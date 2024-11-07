@@ -1,4 +1,5 @@
 from rest_framework import status
+from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -48,16 +49,10 @@ class ItemListView(APIView):
         }
     )
     def post(self, request):
-        self.permission_classes = [IsAdminUser]
-        self.check_permissions(request)
-
         serializer = UpsertItemSerializer(data=request.data)
-
         if serializer.is_valid():
             item = serializer.save()
             logger.info(f"Created item #{item.id}")
             return Response(ReadItemSerializer(item).data, status=status.HTTP_201_CREATED)
 
-        logger.error(f"User {request.user.username} failed to create an item. Errors: {serializer.errors}.")
-        return Response(f"User {request.user.username} failed to create an item. Errors: {serializer.errors}.",
-                        status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

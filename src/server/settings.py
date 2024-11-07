@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'storages',
     'drf_yasg',
-    'knox'
+    'knox',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -66,6 +67,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # My middleware
     'djangorestframework_camel_case.middleware.CamelCaseMiddleWare',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'server.urls'
@@ -155,6 +157,7 @@ REST_FRAMEWORK = {
 
     'DEFAULT_PARSER_CLASSES': (
         'djangorestframework_camel_case.parser.CamelCaseJSONParser',
+        'djangorestframework_camel_case.parser.CamelCaseMultiPartParser',
     ),
 
     'JSON_UNDERSCOREIZE': {
@@ -162,6 +165,10 @@ REST_FRAMEWORK = {
     },
 
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+}
+
+JSON_CAMEL_CASE = {
+    'RENDERER_CLASS': 'drf_orjson_renderer.renderers.ORJSONRenderer'
 }
 
 REST_KNOX = {
@@ -173,10 +180,6 @@ REST_KNOX = {
     'AUTO_REFRESH': False,
     'MIN_REFRESH_INTERVAL': 60,
     'TOKEN_MODEL': 'knox.AuthToken',
-}
-
-JSON_CAMEL_CASE = {
-    'RENDERER_CLASS': 'drf_orjson_renderer.renderers.ORJSONRenderer'
 }
 
 # AWS configuration
@@ -262,3 +265,5 @@ SWAGGER_SETTINGS = {
     },
     'USE_SESSION_AUTH': False,
 }
+
+CORS_ALLOW_ALL_ORIGINS = bool(int(os.environ['CORS_ALLOW_ALL_ORIGINS']))

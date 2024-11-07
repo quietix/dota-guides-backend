@@ -54,9 +54,6 @@ class ItemDetailsView(APIView):
         }
     )
     def patch(self, request, id):
-        self.permission_classes = [IsAdminUser]
-        self.check_permissions(request)
-
         try:
             item = Item.objects.get(id=id)
         except Item.DoesNotExist:
@@ -82,9 +79,6 @@ class ItemDetailsView(APIView):
         }
     )
     def delete(self, request, id):
-        self.permission_classes = [IsAdminUser]
-        self.check_permissions(request)
-
         try:
             item = Item.objects.get(id=id)
         except Item.DoesNotExist:
