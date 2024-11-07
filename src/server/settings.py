@@ -155,6 +155,7 @@ REST_FRAMEWORK = {
 
     'DEFAULT_PARSER_CLASSES': (
         'djangorestframework_camel_case.parser.CamelCaseJSONParser',
+        'djangorestframework_camel_case.parser.CamelCaseMultiPartParser',
     ),
 
     'JSON_UNDERSCOREIZE': {
@@ -162,6 +163,10 @@ REST_FRAMEWORK = {
     },
 
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+}
+
+JSON_CAMEL_CASE = {
+    'RENDERER_CLASS': 'drf_orjson_renderer.renderers.ORJSONRenderer'
 }
 
 REST_KNOX = {
@@ -173,10 +178,6 @@ REST_KNOX = {
     'AUTO_REFRESH': False,
     'MIN_REFRESH_INTERVAL': 60,
     'TOKEN_MODEL': 'knox.AuthToken',
-}
-
-JSON_CAMEL_CASE = {
-    'RENDERER_CLASS': 'drf_orjson_renderer.renderers.ORJSONRenderer'
 }
 
 # AWS configuration
