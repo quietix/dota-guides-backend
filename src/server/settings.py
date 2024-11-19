@@ -265,5 +265,3 @@ SWAGGER_SETTINGS = {
     },
     'USE_SESSION_AUTH': False,
 }
-
-CORS_ALLOW_ALL_ORIGINS = bool(int(os.environ['CORS_ALLOW_ALL_ORIGINS']))
