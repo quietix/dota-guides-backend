@@ -54,7 +54,6 @@ INSTALLED_APPS = [
     'storages',
     'drf_yasg',
     'knox',
-    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -67,7 +66,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # My middleware
     'djangorestframework_camel_case.middleware.CamelCaseMiddleWare',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'server.urls'
