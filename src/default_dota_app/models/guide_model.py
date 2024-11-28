@@ -14,10 +14,7 @@ class Guide(models.Model):
     guide_title = models.CharField(max_length=200)
     guide_description = models.TextField(blank=True)
     display_order = models.IntegerField(
-        default=1,
-        validators=[
-            MinValueValidator(1)
-        ]
+        default=100
     )
 
     def __str__(self):

@@ -2,7 +2,6 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import views as drf_views
-from default_dota_app.serializers import UpsertGuideSerializer, DetailedGuideSerializer
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 import logging
@@ -17,15 +16,16 @@ class CreateGuideView(drf_views.APIView):
         tags=["Guides"],
         operation_summary="Create a Guide",
         operation_description="Create a new guide for the authenticated user.",
-        request_body=UpsertGuideSerializer,
-        responses={
-            201: openapi.Response(
-                description='Guide created successfully',
-                schema=DetailedGuideSerializer,
-            ),
-            400: openapi.Response(description='Invalid input data'),
-            403: openapi.Response(description='Forbidden (user not authenticated)'),
-        }
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=['hero', 'guide_title'],
+            properties={
+                'hero': openapi.Schema(type=openapi.TYPE_STRING, description='Name of hero'),
+                'display_order': openapi.Schema(type=openapi.TYPE_INTEGER, description='Order of the guide display'),
+                'guide_title': openapi.Schema(type=openapi.TYPE_STRING, description='Title of the guide'),
+                'guide_description': openapi.Schema(type=openapi.TYPE_STRING, description='Description of the guide')
+            }
+        )
     )
     def post(self, request):
         create_guide_data = GuideService.create_guide(request)
