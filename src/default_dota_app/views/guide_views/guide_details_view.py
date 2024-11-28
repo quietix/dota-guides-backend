@@ -2,12 +2,11 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import views as drf_views
 from rest_framework.permissions import IsAuthenticated
-from default_dota_app.models import *
 from default_dota_app.serializers import *
 from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
 import logging
 from default_dota_app.services import GuideService
+from drf_yasg import openapi
 
 
 logger = logging.getLogger(__name__)
@@ -30,7 +29,15 @@ class GuideDetailsView(drf_views.APIView):
         tags=["Guides"],
         operation_summary="Update an Existing Guide",
         operation_description="Update an existing guide by its ID for the authenticated user.",
-        request_body=UpsertGuideSerializer
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'hero': openapi.Schema(type=openapi.TYPE_STRING, description='Name of hero'),
+                'display_order': openapi.Schema(type=openapi.TYPE_INTEGER, description='Order of the guide display'),
+                'guide_title': openapi.Schema(type=openapi.TYPE_STRING, description='Title of the guide'),
+                'guide_description': openapi.Schema(type=openapi.TYPE_STRING, description='Description of the guide')
+            }
+        )
     )
     def patch(self, request, id):
         self.permission_classes = [IsAuthenticated]
